@@ -2,82 +2,198 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Iniciar Seccion";
 }
 
-<h1>@ViewData["Title"]</h1>
-<div class="row">
-    <div class="col-md-4">
-        <section>
-            <form id="account" method="post">
-                <h2>Use a local account to log in.</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="form-label">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <div>
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
-                </div>
-            </form>
-        </section>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
+<!-- Custom fonts for this template-->
+<link href="~/lib/PlantillaStartBootstrap/vendor/fontawesome/css/all.min.css" rel="stylesheet" type="text/css">
+<link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="~/lib/PlantillaStartBootstrap/css/sb-admin-2.min.css" rel="stylesheet">
+
+<body class="bg-gradient-primary">
+    <div class="container">
+        <!-- Outer Row  row justify-content-center -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-10 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-6 d-noned-lg-blockbg-login-image">
+                                <div class="text-center">
+                                    <img src="~/img/supplements-vector-set.jpg" style="width: 185px;">
+                                    <h4 class="mt-1 mb-5 pb-1">Mantene tu Cuerpo Sano</h4>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">¡Bienvenido de nuevo!</h1>
+                                    </div>
+                                    <form id="account" method="post" class="user">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                                        <div class="form-group">
+                                            <input asp-for="Input.Email" type="email"
+                                                class="form-control form-control-user" autocomplete="username"
+                                                aria-required="true" id="exampleInputEmail" aria-describedby="emailHelp"
+                                                placeholder="Introducir la dirección de correo electrónico...">
+                                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input asp-for="Input.Password" type="password"
+                                                class="form-control form-control-user" autocomplete="current-password"
+                                                aria-required="true" id="exampleInputPassword" placeholder="Contraseña">
+                                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox small">
+                                                <input type="checkbox" asp-for="Input.RememberMe"
+                                                    class="custom-control-input">
+                                                <label class="custom-control-label"
+                                                    asp-for="Input.RememberMe">Recordarme?</label>
+                                            </div>
+                                        </div>
+                                        <button id="login-submit" type="submit"
+                                            class="btn btn-primary btn-user btn-block">
+                                            Iniciar Seccion
+                                        </button>
+                                        <hr>
+                                        @* <a href="index.html" class="btn btn-google btn-user btn-block">
+                                        <i class="fab fa-google fa-fw"></i> Login with Google
+                                        </a>
+                                        <a href="index.html" class="btn btn-facebook btn-user btn-block">
+                                        <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
+                                        </a> *@
+                                        <div class="text-center">
+                                            <p>
+                                                <a id="forgot-password" asp-page="./ForgotPassword">¿Has olvidado tu
+                                                    contraseña?</a>
+                                            </p>
+                                            <p>
+                                                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">¡Crear
+                                                    Una
+                                                    Cuenta!</a>
+                                            </p>
+                                            <p>
+                                                <a id="resend-confirmation"
+                                                    asp-page="./ResendEmailConfirmation">Reenviar
+                                                    confirmación por correo electrónico</a>
+                                            </p>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                    </form>
-                }
-            }
-        </section>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
+
+</body>
+
+
+
+
+@*
+<div class="row">
+<h1>@ViewData["Title"]</h1>
+<div class="col-md-4">
+<section>
+<form id="account" method="post">
+<h2>Use a local account to log in.</h2>
+<hr />
+<div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+<div class="form-floating mb-3">
+<input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true"
+placeholder="name@example.com" />
+<label asp-for="Input.Email" class="form-label">Email</label>
+<span asp-validation-for="Input.Email" class="text-danger"></span>
 </div>
+<div class="form-floating mb-3">
+<input asp-for="Input.Password" class="form-control" autocomplete="current-password"
+aria-required="true" placeholder="password" />
+<label asp-for="Input.Password" class="form-label">Password</label>
+<span asp-validation-for="Input.Password" class="text-danger"></span>
+</div>
+<div class="checkbox mb-3">
+<label asp-for="Input.RememberMe" class="form-label">
+<input class="form-check-input" asp-for="Input.RememberMe" />
+@Html.DisplayNameFor(m => m.Input.RememberMe)
+</label>
+</div>
+<div>
+<button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+</div>
+<div>
+<p>
+<a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+</p>
+<p>
+<a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+</p>
+<p>
+<a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+</p>
+</div>
+</form>
+</section>
+</div>
+<div class="col-md-6 col-md-offset-2">
+<section>
+<h3>Use another service to log in.</h3>
+<hr />
+@{
+if ((Model.ExternalLogins?.Count ?? 0) == 0)
+{
+<div>
+<p>
+There are no external authentication services configured. See this <a
+href="https://go.microsoft.com/fwlink/?LinkID=532715">article
+about setting up this ASP.NET application to support logging in via external services</a>.
+</p>
+</div>
+}
+else
+{
+<form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post"
+class="form-horizontal">
+<div>
+<p>
+@foreach (var provider in Model.ExternalLogins!)
+{
+<button type="submit" class="btn btn-primary" name="provider" value="@provider.Name"
+title="Log in using your
+@provider.DisplayName account">@provider.DisplayName</button>
+}
+</p>
+</div>
+</form>
+}
+}
+</section>
+</div>
+</div> *@
 
 @section Scripts {
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/lib/PlantillaStartBootstrap/vendor/fontawesome/js/all.min.js"></script>
+    <script src="~/lib/PlantillaStartBootstrap/vendor/jquery/jquery.min.js"></script>
+    <script src="~/lib/PlantillaStartBootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="~/lib/PlantillaStartBootstrap/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="~/lib/PlantillaStartBootstrap/js/sb-admin-2.min.js"></script>
     <partial name="_ValidationScriptsPartial" />
 }

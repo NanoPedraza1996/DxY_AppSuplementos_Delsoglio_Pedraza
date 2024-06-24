@@ -1,15 +1,61 @@
 @inject SignInManager<IdentityUser> SignInManager
 @{
-    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+        var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
-<ul class="nav nav-pills flex-column">
-    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
-    @if (hasExternalLogins)
-    {
-        <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
-    }
-    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>
-</ul>
+
+
+@* <body class="bg-gradient-primary"> *@
+@* <div class="col-md-13"> *@
+<div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+                @* <div class="card-body p-0"> *@
+                <!-- Nested Row within Card Body -->
+                @* <div class="row"> *@
+                @* <div class="col-lg-5 d-none d-lg-block bg-register-image"> *@
+                <div class="text-center">
+                        <ul class="nav nav-pills flex-column">
+                                <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)"
+                                                id="profile" asp-page="./Index"><i class="fa-solid fa-circle-user"></i>
+                                                Perfil</a></li>
+                                <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)"
+                                                id="email" asp-page="./Email"><i class="fa-solid fa-envelope"></i>
+                                                Email</a>
+                                </li>
+                                <li class="nav-item"><a
+                                                class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)"
+                                                id="change-password" asp-page="./ChangePassword"><i
+                                                        class="fa-solid fa-key"></i> Contraseña</a>
+                                </li>
+                                @if (hasExternalLogins)
+                                {
+                                        <li id="external-logins" class="nav-item"><a id="external-login"
+                                                        class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)"
+                                                        asp-page="./ExternalLogins">External
+                                                        logins</a></li>
+                                }
+                        </ul>
+                </div>
+                @* </div> *@
+                @* <div class="col-lg-7">
+                <div class="p-5">
+                <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">¡Crea una cuenta!</h1>
+                </div>
+                <form>
+                <h1 class="h4 text-gray-900 mb-4">adsfg</h1>
+                </form>
+                <div class="text-center">
+                <a class="small" asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">¿Ya
+                tienes
+                una cuenta? ¡Inicia sesión!</a>
+                </div>
+                </div>
+                </div> *@
+                @* </div> *@
+                @* </div> *@
+        </div>
+
+</div>
+@* </div> *@
+@* </body> *@

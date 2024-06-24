@@ -20,3 +20,21 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+
+.contenido {
+  /* margin: 5px 0 5px; */
+  font-size: .8em; 
+  /* color: #000000; */
+  display: flex;
+  justify-content: space-between;
+}
+.contenido a{
+  color: #0c0c0c;
+  text-decoration: none;
+}
+
+.contenido a:hover {
+  text-decoration: underline;
+} 

@@ -5,26 +5,111 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-<h3>@ViewData["Title"]</h3>
+<!-- Custom fonts for this template-->
+<link href="~/lib/PlantillaStartBootstrap/vendor/fontawesome/css/all.min.css" rel="stylesheet" type="text/css">
+@* <link
+href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+rel="stylesheet"> *@
+
+<!-- Custom styles for this template-->
+<link href="~/lib/PlantillaStartBootstrap/css/sb-admin-2.min.css" rel="stylesheet">
+
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<body class="bg-gradient-primary">
+    <div class="container">
+        <!-- Outer Row  row justify-content-center -->
+        @* <div class="row justify-content-center">
+
+        <div class="col-xl-10 col-lg-12 col-md-9"> *@
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    @* <div class="col-lg-6 d-noned-lg-blockbg-login-image">
+                    <div class="text-center">
+                    <img src="~/img/supplements-vector-set.jpg" style="width: 185px;">
+                    <h4 class="mt-1 mb-5 pb-1">Mantene tu Cuerpo Sano</h4>
+                    </div>
+                    </div> *@
+                    <div class="col-lg-7 d-none d-lg-block bg-register-image">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">¡Perfil!</h1>
+                            </div>
+                            <form id="profile-form" method="post">
+                                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                                <div class="form-group">
+                                    <input asp-for="Username" type="email" title="Email"
+                                        class="form-control form-control-user" autocomplete="username"
+                                        aria-required="true" id="exampleInputEmail" aria-describedby="emailHelp"
+                                        placeholder="Por favor elige tu nombre de usuario." disabled>
+                                </div>
+                                <div class="form-group">
+                                    <input asp-for="Input.PhoneNumber" type="password" title="Telefono"
+                                        class="form-control form-control-user" autocomplete="current-password"
+                                        aria-required="true" id="exampleInputPassword"
+                                        placeholder="Introduzca su número de teléfono.">
+                                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                                </div>
+                                <button id="update-profile-button" type="submit"
+                                    class="btn btn-primary btn-user btn-block">Guardar</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="text-center">
+                            <img src="~/img/Perfil.jpeg" style="width: 185px;">
+                            <h4 class="mt-1 mb-5 pb-1">Perfil</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* </div>
+
+        </div> *@
+
+    </div>
+
+</body>
+
+
+
+@* <h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage" />
 <div class="row">
-    <div class="col-md-6">
-        <form id="profile-form" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
-                <label asp-for="Username" class="form-label"></label>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number."/>
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
-            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
-        </form>
-    </div>
+<div class="col-md-6">
+<form id="profile-form" method="post">
+<div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+<div class="form-floating mb-3">
+<input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
+<label asp-for="Username" class="form-label"></label>
 </div>
+<div class="form-floating mb-3">
+<input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number." />
+<label asp-for="Input.PhoneNumber" class="form-label"></label>
+<span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+</div>
+<button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+</form>
+</div>
+</div> *@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/lib/PlantillaStartBootstrap/vendor/fontawesome/js/all.min.js"></script>
+    <script src="~/lib/PlantillaStartBootstrap/vendor/jquery/jquery.min.js"></script>
+    <script src="~/lib/PlantillaStartBootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="~/lib/PlantillaStartBootstrap/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="~/lib/PlantillaStartBootstrap/js/sb-admin-2.min.js"></script>
 }

@@ -14,6 +14,7 @@
 <link href="~/lib/PlantillaStartBootstrap/css/sb-admin-2.min.css" rel="stylesheet">
 
 
+
 <body class="bg-gradient-primary">
 
     <div class="container">
@@ -33,59 +34,59 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">¡Crea una cuenta!</h1>
                             </div>
-                            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="user">
                                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="text" class="form-control form-control-user" id="exampleFirstName"
-                                            placeholder="Nombres">
+                                            title="Nombre" placeholder="Nombre/s">
                                     </div>
                                     <div class="col-sm-6">
                                         <input type="text" class="form-control form-control-user" id="exampleLastName"
-                                            placeholder="Apellido">
+                                            title ="Apellido" placeholder="Apellido/s">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <input asp-for="Input.Email" type="email" class="form-control form-control-user"
-                                        id="exampleInputEmail" autocomplete="username" aria-required="true"
-                                        placeholder="Dirección de correo electrónico" aria-describedby="emailHelp">
+                                        autocomplete="username" aria-required="true" id="exampleInputEmail"
+                                        title="Email" placeholder="Dirección de correo electrónico">
                                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input asp-for="Input.Password" type="password"
-                                            class="form-control form-control-user" id="exampleInputPassword"
-                                            autocomplete="new-password" aria-required="true" placeholder="Contraseña">
+                                        <input asp-for="Input.Password" type="password" title="Contraseña"
+                                            class="form-control form-control-user" autocomplete="new-password"
+                                            aria-required="true" id="exampleInputPassword" placeholder="Contraseña">
                                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                                     </div>
                                     <div class="col-sm-6">
                                         <input asp-for="Input.ConfirmPassword" type="password"
-                                            class="form-control form-control-user" autocomplete="new-password"
-                                            aria-required="true" id="exampleRepeatPassword"
-                                            placeholder="Repita la contraseña">
+                                            autocomplete="new-password" aria-required="true"
+                                            class="form-control form-control-user" id="exampleRepeatPassword"
+                                            title="Contraseña" placeholder="Repita La Contraseña">
                                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                                     </div>
                                 </div>
-                                <button id="registerSubmit" type="submit" class="btn btn-primary btn-user btn-block">
-                                    Registrar Cuenta
-                                </button>
-                                <hr>
-                                @* <a href="index.html" class="btn btn-google btn-user btn-block">
+                                <button id="registerSubmit" type="submit"
+                                    class="btn btn-primary btn-user btn-block">Registrarse</button>
+                                @* <hr>
+                                <a href="index.html" class="btn btn-google btn-user btn-block">
                                 <i class="fab fa-google fa-fw"></i> Register with Google
                                 </a>
                                 <a href="index.html" class="btn btn-facebook btn-user btn-block">
                                 <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
                                 </a> *@
-                                <div class="text-center">
-                                    <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="small">¿Ya
-                                        tienes
-                                        una cuenta? ¡Inicia sesión!</a>
-                                </div>
                             </form>
-                            @* <hr> *@
+                            <hr>
                             @* <div class="text-center">
-                            <a class="small" href="forgot-password.html">Forgot Password?</a>
+                            <a class="small" asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Forgot
+                            Password?</a>
                             </div> *@
+                            <div class="text-center">
+                                <a class="small" asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">¿Ya
+                                    tienes
+                                    una cuenta? ¡Inicia sesión!</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -94,11 +95,6 @@
 
     </div>
 </body>
-
-
-
-
-
 
 
 
@@ -132,40 +128,6 @@ aria-required="true" placeholder="password" />
 </div>
 <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
 </form>
-</div>
-<div class="col-md-6 col-md-offset-2">
-<section>
-<h3>Use another service to register.</h3>
-<hr />
-@{
-if ((Model.ExternalLogins?.Count ?? 0) == 0)
-{
-<div>
-<p>
-There are no external authentication services configured. See this <a
-href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-about setting up this ASP.NET application to support logging in via external services</a>.
-</p>
-</div>
-}
-else
-{
-<form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post"
-class="form-horizontal">
-<div>
-<p>
-@foreach (var provider in Model.ExternalLogins!)
-{
-<button type="submit" class="btn btn-primary" name="provider" value="@provider.Name"
-title="Log in using your
-@provider.DisplayName account">@provider.DisplayName</button>
-}
-</p>
-</div>
-</form>
-}
-}
-</section>
 </div>
 </div> *@
 

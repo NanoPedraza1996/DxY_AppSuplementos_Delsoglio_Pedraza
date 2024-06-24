@@ -1,9 +1,11 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using DxY_AppSuplementos.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DxY_AppSuplementos.Controllers;
 
+[Authorize]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;

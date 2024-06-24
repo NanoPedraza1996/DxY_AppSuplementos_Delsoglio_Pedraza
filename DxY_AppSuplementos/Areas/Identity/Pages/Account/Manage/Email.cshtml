@@ -5,40 +5,142 @@
     ViewData["ActivePage"] = ManageNavPages.Email;
 }
 
-<h3>@ViewData["Title"]</h3>
+<!-- Custom fonts for this template-->
+<link href="~/lib/PlantillaStartBootstrap/vendor/fontawesome/css/all.min.css" rel="stylesheet" type="text/css">
+@* <link
+href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+rel="stylesheet"> *@
+
+<!-- Custom styles for this template-->
+<link href="~/lib/PlantillaStartBootstrap/css/sb-admin-2.min.css" rel="stylesheet">
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<body class="bg-gradient-primary">
+    <div class="container">
+        <!-- Outer Row row justify-content-center -->
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-7 d-none d-lg-block bg-register-image">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">¡Email!</h1>
+                            </div>
+                            <form id="profile-form" method="post">
+                                <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+                                @if (Model.IsEmailConfirmed)
+                                {
+                                    <div class="form-floating mb-3 input-group">
+                                        <input asp-for="Email" class="form-control" placeholder="Please enter your email."
+                                            disabled />
+                                        <div class="input-group-append">
+                                            <span class="h-100 input-group-text text-success font-weight-bold">✓</span>
+                                        </div>
+                                        <label asp-for="Email" class="form-label"></label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-group">
+                                        <input asp-for="Email" type="email" title="Email"
+                                            class="form-control form-control-user" autocomplete="username"
+                                            aria-required="true" id="exampleInputEmail" aria-describedby="emailHelp"
+                                            placeholder="Por favor introduzca su correo electrónico." disabled>
+                                        <button id="email-verification" type="submit"
+                                            asp-page-handler="SendVerificationEmail" class="btn btn-link text-center">Envia
+                                            un correo electronico de verificación</button>
+                                    </div>
+                                    @* <div class="form-floating mb-3">
+                                <input asp-for="Email" class="form-control" placeholder="Please enter your email."
+                                disabled />
+                                <label asp-for="Email" class="form-label"></label>
+                                <button id="email-verification" type="submit"
+                                asp-page-handler="SendVerificationEmail" class="btn btn-link">Send verification
+                                email</button>
+                                </div> *@
+                                }
+                                <div class="form-group">
+                                    <input asp-for="Input.NewEmail" type="email" title="Nuevo E-mail"
+                                        class="form-control form-control-user" autocomplete="email" aria-required="true"
+                                        id="exampleInputNewEmail"
+                                        placeholder="Por favor ingrese un nuevo correo electrónico.">
+                                    <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
+                                </div>
+                                <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail"
+                                    class="btn btn-primary btn-user btn-block">Cambiar E-mail</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="text-center">
+                            <img src="~/img/Email2.png" style="width: 185px;">
+                            <h4 class="mt-1 mb-5 pb-1">Email</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+
+
+
+
+@* <h3>@ViewData["Title"]</h3>
 <partial name="_StatusMessage" for="StatusMessage" />
 <div class="row">
-    <div class="col-md-6">
-        <form id="email-form" method="post">
-            <div asp-validation-summary="All" class="text-danger" role="alert"></div>
-            @if (Model.IsEmailConfirmed)
-            {
-                <div class="form-floating mb-3 input-group">
-                    <input asp-for="Email" class="form-control" placeholder="Please enter your email." disabled />
-                        <div class="input-group-append">
-                            <span class="h-100 input-group-text text-success font-weight-bold">✓</span>
-                        </div>
-                    <label asp-for="Email" class="form-label"></label>
-                </div>
-            }
-            else
-            {
-                <div class="form-floating mb-3">
-                    <input asp-for="Email" class="form-control" placeholder="Please enter your email." disabled />
-                    <label asp-for="Email" class="form-label"></label>
-                    <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">Send verification email</button>
-                </div>
-            }
-            <div class="form-floating mb-3">
-                <input asp-for="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" placeholder="Please enter new email." />
-                <label asp-for="Input.NewEmail" class="form-label"></label>
-                <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
-            </div>
-            <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="w-100 btn btn-lg btn-primary">Change email</button>
-        </form>
-    </div>
+<div class="col-md-6">
+<form id="email-form" method="post">
+<div asp-validation-summary="All" class="text-danger" role="alert"></div>
+@if (Model.IsEmailConfirmed)
+{
+<div class="form-floating mb-3 input-group">
+<input asp-for="Email" class="form-control" placeholder="Please enter your email."
+disabled />
+<div class="input-group-append">
+<span class="h-100 input-group-text text-success font-weight-bold">✓</span>
 </div>
+<label asp-for="Email" class="form-label"></label>
+</div>
+}
+else
+{
+<div class="form-floating mb-3">
+<input asp-for="Email" class="form-control" placeholder="Please enter your email."
+disabled />
+<label asp-for="Email" class="form-label"></label>
+<button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail"
+class="btn btn-link">Send verification email</button>
+</div>
+}
+<div class="form-floating mb-3">
+<input asp-for="Input.NewEmail" class="form-control" autocomplete="email"
+aria-required="true"
+placeholder="Please enter new email." />
+<label asp-for="Input.NewEmail" class="form-label"></label>
+<span asp-validation-for="Input.NewEmail" class="text-danger"></span>
+</div>
+<button id="change-email-button" type="submit" asp-page-handler="ChangeEmail"
+class="w-100 btn btn-lg btn-primary">Change email</button>
+</form>
+</div>
+</div> *@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/lib/PlantillaStartBootstrap/vendor/fontawesome/js/all.min.js"></script>
+    <script src="~/lib/PlantillaStartBootstrap/vendor/jquery/jquery.min.js"></script>
+    <script src="~/lib/PlantillaStartBootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="~/lib/PlantillaStartBootstrap/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="~/lib/PlantillaStartBootstrap/js/sb-admin-2.min.js"></script>
 }

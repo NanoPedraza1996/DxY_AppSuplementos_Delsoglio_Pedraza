@@ -4,6 +4,7 @@ using DxY_AppSuplementos.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DxY_AppSuplementos.Migrations.DxY_Db
 {
     [DbContext(typeof(DxY_DbContext))]
-    partial class DxY_DbContextModelSnapshot : ModelSnapshot
+    [Migration("20240701173733_Promociones")]
+    partial class Promociones
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,49 +50,6 @@ namespace DxY_AppSuplementos.Migrations.DxY_Db
                     b.HasKey("CategoriaID");
 
                     b.ToTable("Categorias");
-                });
-
-            modelBuilder.Entity("DxY_AppSuplementos.Models.DetallePromocion", b =>
-                {
-                    b.Property<int>("DetallePromocionID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DetallePromocionID"));
-
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<int>("Disponibilidad")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Eliminado")
-                        .HasColumnType("bit");
-
-                    b.Property<byte[]>("Imagen")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("NombreImagen")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProductoID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PromocionID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TipoImagen")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("DetallePromocionID");
-
-                    b.HasIndex("ProductoID");
-
-                    b.HasIndex("PromocionID");
-
-                    b.ToTable("DetallePromociones");
                 });
 
             modelBuilder.Entity("DxY_AppSuplementos.Models.Producto", b =>
@@ -177,25 +137,6 @@ namespace DxY_AppSuplementos.Migrations.DxY_Db
                     b.ToTable("Promociones");
                 });
 
-            modelBuilder.Entity("DxY_AppSuplementos.Models.DetallePromocion", b =>
-                {
-                    b.HasOne("DxY_AppSuplementos.Models.Producto", "Producto")
-                        .WithMany("DetallePromociones")
-                        .HasForeignKey("ProductoID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DxY_AppSuplementos.Models.Promocion", "Promocion")
-                        .WithMany("DetallePromociones")
-                        .HasForeignKey("PromocionID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Producto");
-
-                    b.Navigation("Promocion");
-                });
-
             modelBuilder.Entity("DxY_AppSuplementos.Models.Producto", b =>
                 {
                     b.HasOne("DxY_AppSuplementos.Models.Categoria", "Categoria")
@@ -210,16 +151,6 @@ namespace DxY_AppSuplementos.Migrations.DxY_Db
             modelBuilder.Entity("DxY_AppSuplementos.Models.Categoria", b =>
                 {
                     b.Navigation("Productos");
-                });
-
-            modelBuilder.Entity("DxY_AppSuplementos.Models.Producto", b =>
-                {
-                    b.Navigation("DetallePromociones");
-                });
-
-            modelBuilder.Entity("DxY_AppSuplementos.Models.Promocion", b =>
-                {
-                    b.Navigation("DetallePromociones");
                 });
 #pragma warning restore 612, 618
         }

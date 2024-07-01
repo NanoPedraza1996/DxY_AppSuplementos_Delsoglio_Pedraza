@@ -10,7 +10,7 @@ public class Pedido
     public decimal TotalAPagar {get; set;}
     public Estado Estado {get; set;}
     public DateTime FechaRegistro {get; set;}
-    public DateTime CondicionesDePago {get; set;}
+    //public DateTime CondicionesDePago {get; set;}
 }
 
 public enum Estado

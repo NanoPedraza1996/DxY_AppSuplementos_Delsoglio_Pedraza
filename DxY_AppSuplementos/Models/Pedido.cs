@@ -15,6 +15,9 @@ public class Pedido
 
 public enum Estado
 {
-    Activo = 1,
-    Inactivo
+    Preparacion = 1,
+    Preparado,
+    Entregado, 
+    Confirmado,
+    Anulado
 }

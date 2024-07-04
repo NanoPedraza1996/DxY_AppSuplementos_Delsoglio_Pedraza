@@ -23,16 +23,16 @@ function ListadoCategorias(){
                 console.log(categoria)
                 contenidoTabla += `
                 <tr>
-                    <td class="text-center">${categoria.descipcion}</td>
+                    <td class="text-center">${categoria.descripcion}</td>
                     <td class="text-center">${categoria.fechaRegistro}</td>
                     <td class="text-center">${categoria.disponibilidad}</td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-success" onclick="AbrirModalEditar(${Categoria.categoriaID})">
+                    <button type="button" class="btn btn-success" onclick="AbrirModalEditar(${categoria.categoriaID})">
                     Editar
                     </button>
                     </td>
                     <td class="text-center">
-                    <button type="button" class="btn btn-danger" onclick="DesahabilitarCategoria(${Categoria.categoriaID})">
+                    <button type="button" class="btn btn-danger" onclick="DesahabilitarCategoria(${categoria.categoriaID})">
                     Eliminar
                     </button>
                     </td>
@@ -84,7 +84,7 @@ function AbrirModalEditar(categoriaID){
 
             document.getElementById("CategoriaID").value = categoriaID;
             $("#ModalTitulo").text("Editar Categoria");
-            document.getElementById("Descripcion").value = categoria.descipcion;
+            document.getElementById("Descripcion").value = categoria.descripcion;
             document.getElementById("FechaRegistro").value = categoria.fechaRegistro;
             document.getElementById("Disponibilidad").value = categoria.disponibilidad;
             $("#ModalCategorias").modal("show");

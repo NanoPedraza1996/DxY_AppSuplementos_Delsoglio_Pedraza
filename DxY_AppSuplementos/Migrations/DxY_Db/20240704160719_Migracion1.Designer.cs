@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DxY_AppSuplementos.Migrations.DxY_Db
 {
     [DbContext(typeof(DxY_DbContext))]
-    [Migration("20240701175609_DetallePromociones")]
-    partial class DetallePromociones
+    [Migration("20240704160719_Migracion1")]
+    partial class Migracion1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,18 +38,85 @@ namespace DxY_AppSuplementos.Migrations.DxY_Db
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("Disponibilidad")
-                        .HasColumnType("int");
+                    b.Property<bool>("Disponibilidad")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("Eliminado")
                         .HasColumnType("bit");
 
-                    b.Property<int>("FechaRegistro")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("FechaRegistro")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("CategoriaID");
 
                     b.ToTable("Categorias");
+                });
+
+            modelBuilder.Entity("DxY_AppSuplementos.Models.Cliente", b =>
+                {
+                    b.Property<int>("ClienteID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClienteID"));
+
+                    b.Property<string>("ConfirmarContrasenia")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Contrasenia")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Correo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Disponibilidad")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NombreCompleto")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telefono")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ClienteID");
+
+                    b.ToTable("Clientes");
+                });
+
+            modelBuilder.Entity("DxY_AppSuplementos.Models.DetallePedido", b =>
+                {
+                    b.Property<int>("DetallePedidoID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DetallePedidoID"));
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PedidoID")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductoID")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("SubTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalAPagar")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("DetallePedidoID");
+
+                    b.HasIndex("PedidoID");
+
+                    b.ToTable("DetallePedidos");
                 });
 
             modelBuilder.Entity("DxY_AppSuplementos.Models.DetallePromocion", b =>
@@ -95,6 +162,60 @@ namespace DxY_AppSuplementos.Migrations.DxY_Db
                     b.ToTable("DetallePromociones");
                 });
 
+            modelBuilder.Entity("DxY_AppSuplementos.Models.DetalleVenta", b =>
+                {
+                    b.Property<int>("DetalleVentaID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DetalleVentaID"));
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("PrecioVenta")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductoID")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("SubTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("VentaID")
+                        .HasColumnType("int");
+
+                    b.HasKey("DetalleVentaID");
+
+                    b.HasIndex("ProductoID");
+
+                    b.HasIndex("VentaID");
+
+                    b.ToTable("DetalleVentas");
+                });
+
+            modelBuilder.Entity("DxY_AppSuplementos.Models.Pedido", b =>
+                {
+                    b.Property<int>("PedidoID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PedidoID"));
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaRegistro")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("TotalAPagar")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("PedidoID");
+
+                    b.ToTable("Pedidos");
+                });
+
             modelBuilder.Entity("DxY_AppSuplementos.Models.Producto", b =>
                 {
                     b.Property<int>("ProductoID")
@@ -111,8 +232,8 @@ namespace DxY_AppSuplementos.Migrations.DxY_Db
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<int>("Disponibilidad")
-                        .HasColumnType("int");
+                    b.Property<bool>("Disponibilidad")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("Eliminado")
                         .HasColumnType("bit");
@@ -180,6 +301,41 @@ namespace DxY_AppSuplementos.Migrations.DxY_Db
                     b.ToTable("Promociones");
                 });
 
+            modelBuilder.Entity("DxY_AppSuplementos.Models.Venta", b =>
+                {
+                    b.Property<int>("VentaID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VentaID"));
+
+                    b.Property<int>("ClienteID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("TotalAPagar")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("VentaID");
+
+                    b.HasIndex("ClienteID");
+
+                    b.ToTable("Ventas");
+                });
+
+            modelBuilder.Entity("DxY_AppSuplementos.Models.DetallePedido", b =>
+                {
+                    b.HasOne("DxY_AppSuplementos.Models.Pedido", "Pedido")
+                        .WithMany("DetallePedidos")
+                        .HasForeignKey("PedidoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pedido");
+                });
+
             modelBuilder.Entity("DxY_AppSuplementos.Models.DetallePromocion", b =>
                 {
                     b.HasOne("DxY_AppSuplementos.Models.Producto", "Producto")
@@ -199,6 +355,25 @@ namespace DxY_AppSuplementos.Migrations.DxY_Db
                     b.Navigation("Promocion");
                 });
 
+            modelBuilder.Entity("DxY_AppSuplementos.Models.DetalleVenta", b =>
+                {
+                    b.HasOne("DxY_AppSuplementos.Models.Producto", "Producto")
+                        .WithMany("DetalleVentas")
+                        .HasForeignKey("ProductoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DxY_AppSuplementos.Models.Venta", "Venta")
+                        .WithMany("DetalleVentas")
+                        .HasForeignKey("VentaID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Producto");
+
+                    b.Navigation("Venta");
+                });
+
             modelBuilder.Entity("DxY_AppSuplementos.Models.Producto", b =>
                 {
                     b.HasOne("DxY_AppSuplementos.Models.Categoria", "Categoria")
@@ -210,19 +385,47 @@ namespace DxY_AppSuplementos.Migrations.DxY_Db
                     b.Navigation("Categoria");
                 });
 
+            modelBuilder.Entity("DxY_AppSuplementos.Models.Venta", b =>
+                {
+                    b.HasOne("DxY_AppSuplementos.Models.Cliente", "Cliente")
+                        .WithMany("Ventas")
+                        .HasForeignKey("ClienteID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+                });
+
             modelBuilder.Entity("DxY_AppSuplementos.Models.Categoria", b =>
                 {
                     b.Navigation("Productos");
                 });
 
+            modelBuilder.Entity("DxY_AppSuplementos.Models.Cliente", b =>
+                {
+                    b.Navigation("Ventas");
+                });
+
+            modelBuilder.Entity("DxY_AppSuplementos.Models.Pedido", b =>
+                {
+                    b.Navigation("DetallePedidos");
+                });
+
             modelBuilder.Entity("DxY_AppSuplementos.Models.Producto", b =>
                 {
                     b.Navigation("DetallePromociones");
+
+                    b.Navigation("DetalleVentas");
                 });
 
             modelBuilder.Entity("DxY_AppSuplementos.Models.Promocion", b =>
                 {
                     b.Navigation("DetallePromociones");
+                });
+
+            modelBuilder.Entity("DxY_AppSuplementos.Models.Venta", b =>
+                {
+                    b.Navigation("DetalleVentas");
                 });
 #pragma warning restore 612, 618
         }

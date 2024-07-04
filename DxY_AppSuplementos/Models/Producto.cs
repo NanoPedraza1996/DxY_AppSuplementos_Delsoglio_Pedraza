@@ -47,11 +47,6 @@ public class Producto
     public int Stock { get; set; }
 
 
-    [Display(Name = "Disponibilidad.")]
-    public Disponibilidad Disponibilidad { get; set; }
-    //public bool Disponibilidad { get; set; }
-
-
     [Display(Name = "Categoria.")]
     public int CategoriaID { get; set; }
     public virtual Categoria? Categoria { get; set; }
@@ -65,9 +60,12 @@ public class Producto
 
     public bool Eliminado { get; set; }
 
+    public bool Disponibilidad { get; set; }
+
 
     public virtual ICollection<DetallePromocion>? DetallePromociones { get; set; }
 
+    public virtual ICollection<DetalleVenta>? DetalleVentas {get; set;}
 
     [NotMapped]
     public string? ImagenBase64 { get; set; }

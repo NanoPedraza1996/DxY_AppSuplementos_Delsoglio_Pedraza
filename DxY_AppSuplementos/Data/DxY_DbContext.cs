@@ -16,4 +16,14 @@ public class DxY_DbContext : DbContext
     public DbSet<Promocion> Promociones { get; set; }
 
     public DbSet<DetallePromocion> DetallePromociones { get; set; }
+
+    public DbSet<Venta> Ventas { get; set; }
+
+    public DbSet<DetalleVenta> DetalleVentas { get; set; }
+
+    public DbSet<Pedido> Pedidos { get; set; }
+
+    public DbSet<DetallePedido> DetallePedidos { get; set; }
+
+    public DbSet<Cliente> Clientes { get; set; }
 }

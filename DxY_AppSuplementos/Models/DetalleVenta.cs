@@ -12,4 +12,8 @@ public class DetalleVenta
     public decimal SubTotal {get; set;}
     public int VentaID {get; set;}
     public int ProductoID {get; set;}
+
+    public virtual Venta? Venta {get; set;}
+
+    public virtual Producto? Producto {get; set;}
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DxY_AppSuplementos.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240609193914_MigracionInicial")]
-    partial class MigracionInicial
+    [Migration("20240704010922_Migracion1")]
+    partial class Migracion1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

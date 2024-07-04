@@ -13,5 +13,6 @@ public class DetallePedido
     public int ProductoID {get; set;}
     public decimal TotalAPagar {get; set;}
     public int PedidoID {get; set;}
+    public virtual Pedido Pedido {get; set;}
     //public int PromocionID {get; set;}
 }

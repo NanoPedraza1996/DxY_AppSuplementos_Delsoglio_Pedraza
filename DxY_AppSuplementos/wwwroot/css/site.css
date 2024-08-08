@@ -38,3 +38,23 @@ body {
 .contenido a:hover {
   text-decoration: underline;
 } 
+
+
+
+p {
+  /* color: red; */
+  font-size: 1px; 
+  position: relative;
+}
+
+.des:invalid  {
+  border: 2px solid red;
+}
+
+.des:invalid:required {
+  background-image: linear-gradient(to right, pink, lightgreen);
+} 
+
+.des:valid  {
+  border: 2px solid black;
+}

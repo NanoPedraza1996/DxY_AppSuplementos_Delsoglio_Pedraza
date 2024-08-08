@@ -15,10 +15,7 @@ public class Promocion
     public string? Nombre { get; set; }
 
 
-    [Display(Name = "Precio.")]
-    [Required(ErrorMessage = "El Precio Es Obligatorio.")]
-    [RegularExpression("^[1-1000000]", ErrorMessage = "Solo Se Aceptan Numeros En El Campo.")]
-    [StringLength(25, MinimumLength = 2, ErrorMessage = "Solo Se Aceptan 2 o Mas Digito En El Campo.")]
+    [Display(Name = "Total A Pagar.")]
     public decimal TotalAPagar { get; set; }
 
 

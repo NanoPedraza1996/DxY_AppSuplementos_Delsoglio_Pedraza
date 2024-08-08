@@ -3,12 +3,14 @@
 }
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" onclick="NuevoRegistro()" data-bs-toggle="modal" data-bs-target="#ModalCategorias">
+<button type="button" class="btn btn-primary" onclick="NuevoRegistro()" data-bs-toggle="modal"
+    data-bs-target="#ModalCategorias">
     Nuevo Registro
 </button>
 
 <!-- Modal -->
-<div class="modal fade" id="ModalCategorias" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ModalCategorias" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -16,26 +18,20 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
-            <div class="row">
-                <input type="hidden" id="CategoriaID" value="0"/>
-                <div class="mb-3">
-                    <label for="Descripcion" class="form-label">Descripcion</label>
-                    <input type="text" id="Descripcion" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label for="FechaRegistro" class="form-label">Fecha de Registro</label>
-                    <input type="datetime-local" id="FechaRegistro" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label for="Disponibilidad" class="form-label">Disponibilidad</label>
-                    @Html.DropDownList("Disponibilidad",null, htmlAttributes:new{@class="form-control"})
-                </div>
-            </div>
-        </form>
+                <form class="needs-validation" novalidate>
+                    <div class="row">
+                        <input type="hidden" id="CategoriaID" value="0" />
+                        <div class="mb-3 position-relative">
+                            <label for="Descripcion" class="form-label">Descripcion</label>
+                            <input type="text" id="Descripcion" name="Descripcion" class="form-control des" required>
+                            <p id="error"></p>
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" onclick="LimpiarModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" onclick="LimpiarModal()" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
             </div>
         </div>
@@ -43,17 +39,15 @@
 </div>
 
 <table class="table table-hover">
-  <thead>
-    <tr>
-      <th class="table-primary">Descripción</th>
-      <th class="table-primary">Fecha de Registro</th>
-      <th class="table-primary">Disponibilidad</th>
-      <th class="table-primary" style="width: 70px"></th>
-      <th class="table-primary" style="width: 70px"></th>
-    </tr>
-  </thead>
-  <tbody id="tbody-categorias">
-  </tbody>
+    <thead>
+        <tr class="text-center">
+            <th>Descripción</th>
+            <th>Fecha de Registro</th>
+            <th><b><u>Opciones:</u></b></th>
+        </tr>
+    </thead>
+    <tbody id="tbody-categorias">
+    </tbody>
 </table>
 
 @section Scripts

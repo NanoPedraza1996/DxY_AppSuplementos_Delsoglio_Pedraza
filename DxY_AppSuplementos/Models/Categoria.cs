@@ -21,9 +21,8 @@ public class Categoria
     public DateTime FechaRegistro { get; set; }
 
 
-    [Display(Name = "Disponibilidad.")]
+
     public bool Disponibilidad { set; get; }
-    // public bool Disponibilidad { get; set; }
 
 
     public bool Eliminado { get; set; }
@@ -32,9 +31,16 @@ public class Categoria
     public virtual ICollection<Producto>? Productos { get; set; }
 }
 
-
-public enum Disponibilidad
+public class VistaMostrarCategoria
 {
-    Disponible = 1,
-    NoDispoible,
+    public int CategoriaID { get; set; }
+
+    public string? Descripcion { get; set; }
+
+    public DateTime FechaRegistro { get; set; }
+    public string? FechaRegistroString { get; set; }
+
+    public bool Eliminado { get; set; }
+
+    public bool Disponibilidad { set; get; }
 }

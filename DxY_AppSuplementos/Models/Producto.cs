@@ -52,6 +52,7 @@ public class Producto
     public virtual Categoria? Categoria { get; set; }
 
 
+
     [Display(Name = "Foto.")]
     public byte[]? Imagen { get; set; }
     public string? TipoImagen { get; set; }
@@ -65,9 +66,43 @@ public class Producto
 
     public virtual ICollection<DetallePromocion>? DetallePromociones { get; set; }
 
-    public virtual ICollection<DetalleVenta>? DetalleVentas {get; set;}
+    public virtual ICollection<DetalleVenta>? DetalleVentas { get; set; }
 
     [NotMapped]
     public string? ImagenBase64 { get; set; }
 
 }
+
+
+
+// public class VistaProductos
+// {
+//     public int ProductoID { get; set; }
+
+
+//     public string? Nombre { get; set; }
+
+
+//     public string? Descripcion { get; set; }
+
+
+//     public DateTime FechaRegistro { get; set; }
+//     public string? FechaRegistroString { get; set; }
+
+
+//     public decimal PrecioCompra { get; set; }
+
+
+//     public decimal PrecioVenta { get; set; }
+
+
+//     public int Stock { get; set; }
+
+
+//     public int CategoriaID { get; set; }
+//     public string? CategoriaIDNombre { get; set; }
+
+
+//     public byte[]? Imagen { get; set; }
+
+// }

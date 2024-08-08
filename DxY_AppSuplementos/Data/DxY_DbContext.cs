@@ -26,4 +26,6 @@ public class DxY_DbContext : DbContext
     public DbSet<DetallePedido> DetallePedidos { get; set; }
 
     public DbSet<Cliente> Clientes { get; set; }
+
+    public DbSet<DetalleVentaTemporal> DetalleVentaTemporales { get; set; }
 }

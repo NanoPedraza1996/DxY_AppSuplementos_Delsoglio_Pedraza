@@ -2,10 +2,6 @@
     ViewData["Title"] = "Productos";
 }
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-    Launch static backdrop modal
-</button>
 
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -13,19 +9,96 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Agregar Productos</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Understood</button>
-            </div>
+            <form id='files' method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <input type="hidden" id="ProductoID" name="ProductoID" value="0" />
+                    <div class="row">
+                        <div class="mb-3 col-6">
+                            <label for="Nombre" class="control-label">Nombre</label>
+                            <input type="text" class="form-control" id="Nombre" name="Nombre" />
+                            <p class="text-danger" id="Error"></p>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="FechaRegistro" class="form-label"><b>Fecha De Registro:</b></label>
+                            <input type="datetime-local" id="FechaRegistro" class="form-control"
+                                value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm")" name="FechaRegistro" />
+                            <p class="text-danger" id="Error"></p>
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label for="Descripcion" class="control-label">Descripcion</label>
+                            <input type="text" class="form-control" id="Descripcion" name="Descripcion" />
+                            <p class="text-danger" id="Error"></p>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="PrecioCompra" class="control-label">Precio De Compra:</label>
+                            <input type="number" class="form-control" id="PrecioCompra" name="PrecioCompra" />
+                            <p class="text-danger" id="Error"></p>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="PrecioVenta" class="control-label">Precio De Venta</label>
+                            <input type="number" class="form-control" id="PrecioVenta" name="PrecioVenta" />
+                            <p class="text-danger" id="Error"></p>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="Stock" class="control-label">Stock</label>
+                            <input type="number" class="form-control" id="Stock" name="Stock" />
+                            <p class="text-danger" id="Error"></p>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="CategoriaID" class="form-label"><b>Categorias:</b></label>
+                            @Html.DropDownList("CategoriaID", null, htmlAttributes: new
+                                {
+                                    @class = "form-control",
+                                    name = "CategoriaID"
+                                })
+                            <p class="text-danger" id="Error"></p>
+                        </div>
+                        <div class="">
+                            <label for="Imagen" class="control-label text-center">Imagen</label>
+                            <input type="file" class="form-control" name="Imagen" id='Imagen'>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" onclick="GuardarProductos()" class="btn btn-primary">Guardar
+                        Datos</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+
+<!-- Button trigger modal -->
+<button type="button" onclick="BuscarProducto()" class="btn btn-primary" data-bs-toggle="modal"
+    data-bs-target="#staticBackdrop">
+    Cargar Datos
+</button>
+<hr />
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th class="table-primary">Nombre</th>
+            <th class="table-primary">Descripcion</th>
+            <th class="table-primary">Fechas De Registros</th>
+            <th class="table-primary">Precio Ventas</th>
+            <th class="table-primary">Precio Compras</th>
+            <th class="table-primary">Stock</th>
+            <th class="table-primary">Categorias</th>
+            <th class="table-primary">Imagen</th>
+            <th class="table-primary">Opciones:</th>
+            @* <th class="table-primary" style="width: 70px"></th>
+            <th class="table-primary" style="width: 70px"></th> *@
+        </tr>
+    </thead>
+    <tbody id="TablaProducto">
+    </tbody>
+</table>
+
 
 @section Scripts
 {

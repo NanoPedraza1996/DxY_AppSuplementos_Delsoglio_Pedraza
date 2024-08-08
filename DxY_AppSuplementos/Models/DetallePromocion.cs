@@ -8,14 +8,11 @@ public class DetallePromocion
     [Key]
     public int DetallePromocionID { get; set; }
 
+
     [Display(Name = "Descripcion.")]
     [Required(ErrorMessage = "La Descripcion Es Obligatorio.")]
     [MaxLength(150, ErrorMessage = "El Largo Maximo Es de {0} Caracteres.")]
     public string? Descripcion { get; set; }
-
-
-    [Display(Name = "Fecha De Registro.")]
-    public Disponibilidad Disponibilidad { get; set; }
 
 
     [Display(Name = "Foto.")]
@@ -35,6 +32,9 @@ public class DetallePromocion
 
 
     public bool Eliminado { get; set; }
+
+
+    public bool Disponibilidad { get; set; }
 
 
     [NotMapped]

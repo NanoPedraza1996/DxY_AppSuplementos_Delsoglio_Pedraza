@@ -1,0 +1,105 @@
+@{
+    ViewData["Title"] = "Crear Promociones";
+}
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Crear Detalle Del Pedido</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <input type="hidden" id="DetallePedidoID" value="0" />
+                        <div class="mb-3 col-6">
+                            <label for="PromocionID" class="form-label"><b>Promociones:</b></label>
+                            <input type="date" id="PromocionID" class="form-control"
+                                value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label for="Descripcion" class="form-label"><b>Descripcion:</b></label>
+                            <textarea type="text" id="Descripcion" class="form-control" style="text-transform:uppercase"
+                                placeholder="Descripcion de la Promocion"></textarea>
+                        </div>
+                        <div class="mb-3 col-6">
+                            <label for="ProductoID" class="form-label"><b>Productos:</b></label>
+                            <input type="date" id="ProductoID" class="form-control"
+                                value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" onclick="GuardarPromocion()" class="btn btn-primary">Guardar Datos</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4>Crear Promociones</h4>
+<hr />
+@* <div class="row">
+<div class="col-md-4"> *@
+<form asp-action="Crear">
+    <div class="row">
+        <input type="hidden" id="DetallePedidoID" value="0" />
+        <div class="mb-3 col-6">
+            <label for="CategoriaID" class="form-label"><b>Categorias:</b></label>
+            @Html.DropDownList("CategoriaID", null, htmlAttributes: new
+                {
+                    @class = "form-control",
+                    name = "CategoriaID"
+                })
+        </div>
+        <div class="mb-3 col-4">
+            <label for="Nombre" class="form-label"><b>Nombre:</b></label>
+            <input type="text" id="Nombre" class="form-control" style="text-transform:uppercase"
+                placeholder="Nombre Promocion">
+        </div>
+        <div class="mb-3 col-4">
+            <label for="TotalAPagar" class="form-label"><b>Total A Pagar:</b></label>
+            <input type="number" id="TotalAPagar" class="form-control" style="text-transform:uppercase"
+                placeholder="Total A Pagar">
+        </div>
+        <div class="mb-3 col-4">
+            <label for="FechaRegistro" class="form-label"><b>Fecha De Registro:</b></label>
+            <input type="submit" id="FechaRegistro" class="form-control" value="@DateTime.Now.ToString("dd-MM-yyyy")" />
+        </div>
+        <div class="form-group contenido">
+            <input type="submit" value="Finalizar Promocion" class="btn btn-success" />
+            <button type="buton" class="btn btn-danger">Cancelar Promocion</button>
+        </div>
+    </div>
+</form>
+@* </div>
+</div> *@
+
+<table class="table">
+    <thead>
+        <tr class="text-center">
+            <th>Promociones</th>
+            <th>Imagen</th>
+            <th>Descripcion</th>
+            <th>Productos</th>
+            <th><!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" onclick="BuscarPedidioDetalle()" data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop">
+                    Cargar Detalle Promocion
+                </button>
+            </th>
+        </tr>
+    </thead>
+    <tbody id="TablaPedidoCreado">
+    </tbody>
+</table>
+
+
+@section Scripts
+{
+    <script src="~/js/Pedidos-1.0.0.js"></script>
+}

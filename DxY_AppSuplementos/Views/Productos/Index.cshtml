@@ -2,6 +2,23 @@
     ViewData["Title"] = "Productos";
 }
 
+<link href="~/lib/PlantillaStartBootstrap/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between">
+ 
+        <!-- Button trigger modal -->
+        <button type="button" onclick="BuscarProducto()" class="btn btn-primary" data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop">
+            Nuevo Producto
+        </button>
+        <p style="color: red;"><b><u>PRODUCTOS</u></b></p>
+        <button class="btn btn-warning" onclick="Imprimir()">
+            <i class="fa-solid fa-download"></i> IMPRIMIR
+        </button>
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -73,35 +90,45 @@
 </div>
 
 
-<!-- Button trigger modal -->
-<button type="button" onclick="BuscarProducto()" class="btn btn-primary" data-bs-toggle="modal"
-    data-bs-target="#staticBackdrop">
-    Cargar Datos
-</button>
 <hr />
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th class="table-primary">Nombre</th>
-            <th class="table-primary">Descripcion</th>
-            <th class="table-primary">Fechas De Registros</th>
-            <th class="table-primary">Precio Ventas</th>
-            <th class="table-primary">Precio Compras</th>
-            <th class="table-primary">Stock</th>
-            <th class="table-primary">Categorias</th>
-            <th class="table-primary">Imagen</th>
-            <th class="table-primary">Opciones:</th>
-            @* <th class="table-primary" style="width: 70px"></th>
-            <th class="table-primary" style="width: 70px"></th> *@
-        </tr>
-    </thead>
-    <tbody id="TablaProducto">
-    </tbody>
-</table>
 
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Listado De Productos</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="table-primary">Nombre</th>
+                        <th class="table-primary">Descripcion</th>
+                        <th class="table-primary">Fechas De Registros</th>
+                        <th class="table-primary">Precio Ventas</th>
+                        <th class="table-primary">Precio Compras</th>
+                        <th class="table-primary">Stock</th>
+                        <th class="table-primary">Categorias</th>
+                        <th class="table-primary">Imagen</th>
+                        <th class="table-primary">Opciones:</th>
+                        @* <th class="table-primary" style="width: 70px"></th>
+                        <th class="table-primary" style="width: 70px"></th> *@
+                    </tr>
+                </thead>
+                <tbody id="TablaProducto">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 
 @section Scripts
 {
     <script src="~/js/Productos-1.0.0.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.0/jspdf.umd.min.js"></script>
 }

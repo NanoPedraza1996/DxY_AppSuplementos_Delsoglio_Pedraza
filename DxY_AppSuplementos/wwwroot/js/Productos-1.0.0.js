@@ -14,7 +14,7 @@ function BuscarProducto() {
             $("#TablaProducto").empty();
             $.each(productos, function (index, producto) {
                 // let contenidoTabla = ``;
-                let contenidoTabla = '<button type="button" class="btn btn-success" onclick="AbrirModalEjercicioFisico(' + producto.productoID + ')"><i class="fa-solid fa-pen-to-square"></i></Button>'
+                let contenidoTabla = '<button type="button" class="btn btn-success" onclick="AbrirModalProducto(' + producto.productoID + ')"><i class="fa-solid fa-pen-to-square"></i></Button>'
                     + '<button type="button" class="btn btn-danger" onclick="EliminarProducto(' + producto.productoID + ')"><i class="fa-solid fa-trash"></i></button>'
 
                 let imagen = '<td></td>';
@@ -141,7 +141,30 @@ function EliminarProducto(productoID) {
     });
 }
 
+function AbrirModalProducto(productoID) {
+    $.ajax({
+        url: '../../Productos/BuscarProducto',
+        data: { productoID: productoID },
+        type: 'POST',
+        dataType: 'json',
+        success: function (productos) {
+            var producto = productos[0];
 
+            document.getElementById("ProductoID").value = productoID;
+            $("#staticBackdropLabel1").text("Editar Producto");
+            document.getElementById("Nombre").value = producto.nombre;
+            document.getElementById("Descripcion").value = producto.descripcion;
+            document.getElementById("PrecioCompra").value = producto.precioCompra;
+            document.getElementById("PrecioVenta").value = producto.precioVenta;
+            document.getElementById("CategoriaID").value = producto.categoriaID;
+            $("#staticBackdrop1").modal("show");
+        },
+        error: function (xhr, status) {
+            alert("Disculpe, Existio Un Problema");
+        }
+    });
+
+}
 {/* <td>${producto.nombre}</td>
                     <td>${producto.descripcion}</td>
                     <td>${producto.fechaRegistro}</td>

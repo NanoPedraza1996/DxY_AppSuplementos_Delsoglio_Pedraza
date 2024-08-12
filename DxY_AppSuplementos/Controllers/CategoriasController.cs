@@ -74,6 +74,10 @@ public class CategoriasController : Controller
                     _contexto.Add(categoria);
                     _contexto.SaveChanges();
                 }
+                else
+                {
+                    resultado = "NO";
+                }
 
             }
             else
@@ -86,6 +90,10 @@ public class CategoriasController : Controller
                     categoriaEditar.Descripcion = descripcion;
                     categoriaEditar.FechaRegistro = DateTime.Now;
                     _contexto.SaveChanges();
+                }
+                else
+                {
+                    resultado = "No";
                 }
             }
         }
@@ -125,12 +133,28 @@ public class CategoriasController : Controller
     }
 
 
-    public JsonResult EliminarCategoria(int categoriaID)
+    public JsonResult EliminarCategoria(int categoriaID, int eliminado)
     {
         string resultado = "";
         var eliminarCategoria = _contexto.Categorias.Find(categoriaID);
-        _contexto.Remove(eliminarCategoria);
-        _contexto.SaveChanges();
+        if (eliminarCategoria != null)
+        {
+            var cateEnProduc = _contexto.Productos.Where(p => p.CategoriaID == categoriaID).Count();
+            if (cateEnProduc == 0)
+            {
+                eliminado = 0;
+                _contexto.Remove(eliminarCategoria);
+                _contexto.SaveChanges();
+            }
+            else
+            {
+                eliminado = 1;
+                _contexto.SaveChanges();
+                resultado = "NO SE PUDO";
+            }
+
+        }
+
         return Json(resultado);
     }
 

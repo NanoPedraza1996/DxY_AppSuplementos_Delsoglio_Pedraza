@@ -18,20 +18,21 @@ public class VentasController : Controller
         _context = context;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var ventas = _contexto.Ventas.Include(v => v.Cliente);
+        return View(await ventas.ToListAsync());
     }
 
-    public IActionResult Crear()
+    public async Task<IActionResult> Crear()
     {
         var SelectListItem = new List<SelectListItem>
         {
             new SelectListItem {Value = "0", Text = "[SELECCIONE...]"}
         };
 
-        var producto = _contexto.Productos.Where(p => p.Eliminado == false).OrderBy(p => p.Descripcion).ToList();
-        var cliente = _contexto.Clientes.Where(c => c.Disponibilidad == false).OrderBy(c => c.ClienteID).ToList();
+        var producto = await _contexto.Productos.Where(p => p.Eliminado == false).OrderBy(p => p.Descripcion).ToListAsync();
+        var cliente = await _contexto.Clientes.Where(c => c.Disponibilidad == false).OrderBy(c => c.ClienteID).ToListAsync();
 
         producto.Add(new Producto { ProductoID = 0, Descripcion = "[SELECCIONE...]" });
         ViewBag.ProductoID = new SelectList(producto.OrderBy(p => p.Descripcion), "ProductoID", "Nombre");
@@ -42,16 +43,28 @@ public class VentasController : Controller
         return View();
     }
 
-    // public JsonResult BuscarVentas (int? id)
-    // {
-    //     string resultado = "";
-    //     var venta = _contexto.Ventas.ToList();
-    //     if (id != null)
-    //     {
-    //         venta = venta.Where(v => v.VentaID == id).ToList();
-    //     }
-    //     return Json(venta);
-    // }
+
+    public JsonResult ListadoVentas(int? id)
+    {
+        var venta = _contexto.Ventas.Include(v => v.Cliente).ToList();
+        if (id != null)
+        {
+            venta = venta.Where(v => v.VentaID == id).ToList();
+        }
+
+        var ventas = venta.Select(v => new MostrarVistaVentas
+        {
+            VentaID = v.VentaID,
+            Fecha = v.Fecha,
+            FechaString = v.Fecha.ToString("dd/MM/yyyy"),
+            TotalAPagar = v.TotalAPagar,
+            ClienteID = v.ClienteID,
+            ClienteIDNombre = v.Cliente.NombreCompleto
+        }).ToList();
+
+        return Json(ventas);
+    }
+
 
     public JsonResult ListadoDetalleVentaTemporal(int? id)
     {
@@ -84,57 +97,79 @@ public class VentasController : Controller
     }
 
 
-    public JsonResult ListaDetallesVentas(int? id)
+    public JsonResult ListaDetallesVentas(int ventaID)
     {
-        List<DetalleVenta> detalleVenta = new List<DetalleVenta>();
-
-        var detalleVentas = _contexto.DetalleVentas.ToList();
-        foreach (var temporal in detalleVentas)
+        var detalleVenta = _contexto.DetalleVentas.ToList();
+        if (ventaID != 0)
         {
-            detalleVenta.Add(temporal);
+            detalleVenta = detalleVenta.Where(d => d.VentaID == ventaID).ToList();
         }
 
-        return Json(detalleVenta);
+        var detalleVentas = detalleVenta.Select(d => new MostrarVistaDetalleVenta
+        {
+            DetalleVentaID = d.DetalleVentaID,
+            PrecioVenta = d.PrecioVenta,
+            Cantidad = d.Cantidad,
+            SubTotal = d.SubTotal,
+            VentaID = d.VentaID,
+            ProductoID = d.ProductoID
+        }).ToList();
+        // List<DetalleVenta> detalleVenta = new List<DetalleVenta>();
+
+        // var detalleVentas = _contexto.DetalleVentas.Where(d => d.DetalleVentaID == ventaID).SingleOrDefault();
+        // if (detalleVentas != null)
+        // {
+        //     detalleVentas = detalleVentas.Where(d => d.DetalleVentaID == ventaID).ToList();
+        //     foreach (var temporal in detalleVentas)
+        //     {
+        //         detalleVenta.Add(temporal);
+        //     }
+        // }
+
+        return Json(detalleVentas);
     }
 
 
-    public JsonResult AgregarDetalleVenta(int detalleVentaID, int cantidad, decimal subTotal, int productoID)
+    public async Task<JsonResult> AgregarDetalleVenta(int detalleVentaID, int cantidad, decimal subTotal, int productoID)
     {
         string resultado = "";
-        using (var transaccion = _contexto.Database.BeginTransaction())
+        if (detalleVentaID == 0)
         {
-            try
+            using (var transaccion = await _contexto.Database.BeginTransactionAsync())
             {
-                var detalleTemporal = _contexto.DetalleVentas.Where(d => d.DetalleVentaID == detalleVentaID).Count();
-                if (detalleTemporal == 0)
+                try
                 {
-                    var detalleventaExiste = _contexto.Productos.Where(d => d.ProductoID == productoID).SingleOrDefault();
-
-                    var VentaTemp = new DetalleVentaTemporal
+                    var detalleTemporal = await _contexto.DetalleVentas.Where(d => d.DetalleVentaID == detalleVentaID).CountAsync();
+                    if (detalleTemporal == 0)
                     {
-                        PrecioVenta = detalleventaExiste.PrecioVenta,
-                        Cantidad = cantidad,
-                        SubTotal = subTotal,
-                        ProductoID = detalleventaExiste.ProductoID,
-                        Nombre = detalleventaExiste.Nombre
+                        var detalleventaExiste = await _contexto.Productos.Where(d => d.ProductoID == productoID).SingleOrDefaultAsync();
 
-                    };
-                    _contexto.DetalleVentaTemporales.Add(VentaTemp);
-                    _contexto.SaveChanges();
-                    transaccion.Commit();
+                        var VentaTemp = new DetalleVentaTemporal
+                        {
+                            PrecioVenta = detalleventaExiste.PrecioVenta,
+                            Cantidad = cantidad,
+                            SubTotal = subTotal,
+                            ProductoID = detalleventaExiste.ProductoID,
+                            Nombre = detalleventaExiste.Nombre
+
+                        };
+                        await _contexto.DetalleVentaTemporales.AddAsync(VentaTemp);
+                        await _contexto.SaveChangesAsync();
+                        await transaccion.CommitAsync();
+                    }
+
+                    // transaccion.Commit();
+                }
+                catch (System.Exception)
+                {
+                    transaccion.Rollback();
+                    resultado = "Hubo Un Error";
                 }
 
-                // transaccion.Commit();
             }
-            catch (System.Exception)
-            {
-                transaccion.Rollback();
-                resultado = "Hubo Un Error";
-            }
-
         }
 
-        ViewData["ProductoID"] = new SelectList(_contexto.Productos.ToList(), "ProductoID", "Nombre");
+        //ViewData["ProductoID"] = new SelectList(_contexto.Productos.ToList(), "ProductoID", "Nombre");
         return Json(resultado);
     }
 
@@ -187,10 +222,10 @@ public class VentasController : Controller
     // }
 
 
-    public JsonResult EliminarVentaDetalleTemporal(int detalleVentaTemporalID)
+    public async Task<JsonResult> EliminarVentaDetalleTemporal(int detalleVentaTemporalID)
     {
         string resultado = "";
-        using (var transaccion = _contexto.Database.BeginTransaction())
+        using (var transaccion = await _contexto.Database.BeginTransactionAsync())
         {
             try
             {
@@ -198,12 +233,12 @@ public class VentasController : Controller
                 // producto.Disponibilidad = false;
                 // _contexto.SaveChanges();
 
-                var ventaTemporal = _contexto.DetalleVentaTemporales.Where(d => d.DetalleVentaTemporalID == detalleVentaTemporalID).SingleOrDefault();
+                var ventaTemporal = await _contexto.DetalleVentaTemporales.Where(d => d.DetalleVentaTemporalID == detalleVentaTemporalID).SingleOrDefaultAsync();
                 _contexto.DetalleVentaTemporales.Remove(ventaTemporal);
-                _contexto.SaveChanges();
+                await _contexto.SaveChangesAsync();
 
 
-                transaccion.Commit();
+                await transaccion.CommitAsync();
             }
             catch (System.Exception)
             {
@@ -213,24 +248,24 @@ public class VentasController : Controller
         return Json(resultado);
     }
 
-    public JsonResult CancelarVenta()
+    public async Task<JsonResult> CancelarVenta()
     {
         string resultado = "";
 
-        using (var transaccion = _contexto.Database.BeginTransaction())
+        using (var transaccion = await _contexto.Database.BeginTransactionAsync())
         {
             try
             {
-                var detalleTemporal = _contexto.DetalleVentaTemporales.ToList();
+                var detalleTemporal = await _contexto.DetalleVentaTemporales.ToListAsync();
 
                 foreach (var temporal in detalleTemporal)
                 {
-                    var detalleventa = _contexto.DetalleVentas.Where(d => d.DetalleVentaID == temporal.DetalleVentaTemporalID).SingleOrDefault();
+                    var detalleventa = await _contexto.DetalleVentas.Where(d => d.DetalleVentaID == temporal.DetalleVentaTemporalID).SingleOrDefaultAsync();
                 }
                 _contexto.DetalleVentaTemporales.RemoveRange(detalleTemporal);
-                _contexto.SaveChanges();
+                await _contexto.SaveChangesAsync();
 
-                transaccion.Commit();
+                await transaccion.CommitAsync();
             }
             catch (System.Exception)
             {
@@ -243,14 +278,17 @@ public class VentasController : Controller
     }
 
 
-    public JsonResult GuardarVentas(int ventaID, decimal totalAPagar, int clienteID)
+
+
+
+    public async Task<JsonResult> GuardarVentas(int ventaID, decimal totalAPagar, int clienteID)
     {
         string resultado = "";
-        using (var transaccion = _contexto.Database.BeginTransaction())
+        using (var transaccion = await _contexto.Database.BeginTransactionAsync())
         {
             try
             {
-                var existeVenta = _contexto.Ventas.Where(v => v.VentaID == ventaID).SingleOrDefault();
+                var existeVenta = await _contexto.Ventas.Where(v => v.VentaID == ventaID).SingleOrDefaultAsync();
                 var venta = new Venta
                 {
                     VentaID = ventaID,
@@ -258,10 +296,10 @@ public class VentasController : Controller
                     TotalAPagar = totalAPagar,
                     ClienteID = clienteID
                 };
-                _contexto.Add(venta);
-                _contexto.SaveChanges();
+                await _contexto.AddAsync(venta);
+                await _contexto.SaveChangesAsync();
 
-                var detalleVenta = _contexto.DetalleVentaTemporales.ToList();
+                var detalleVenta = await _contexto.DetalleVentaTemporales.ToListAsync();
                 foreach (var detalles in detalleVenta)
                 {
                     var detalle = new DetalleVenta
@@ -273,14 +311,17 @@ public class VentasController : Controller
                         ProductoID = detalles.ProductoID,
 
                     };
-                    _contexto.DetalleVentas.Add(detalle);
-                    _contexto.SaveChanges();
+                    await _contexto.DetalleVentas.AddAsync(detalle);
+                    await _contexto.SaveChangesAsync();
                 }
                 _contexto.DetalleVentaTemporales.RemoveRange(detalleVenta);
-                _contexto.SaveChanges();
+                //_contexto.DetalleVentaTemporales.UpdateRange();
+                await _contexto.SaveChangesAsync();
 
-                transaccion.Commit();
+                await transaccion.CommitAsync();
 
+                // return Json(nameof(Index));
+                return Json(RedirectToAction(nameof(Index)));
             }
             catch (System.Exception)
             {
@@ -289,7 +330,18 @@ public class VentasController : Controller
             }
         }
 
-
         return Json(resultado);
     }
+
+
+
+    public async Task<JsonResult> EliminarVenta(int ventaID)
+    {
+        string resultado = "";
+        var eliminarVenta = await _contexto.Ventas.FindAsync(ventaID);
+        _contexto.Remove(eliminarVenta);
+        await _contexto.SaveChangesAsync();
+        return Json(resultado);
+    }
+
 }

@@ -2,11 +2,21 @@
     ViewData["Title"] = "Categorias";
 }
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" onclick="NuevoRegistro()" data-bs-toggle="modal"
-    data-bs-target="#ModalCategorias">
-    Nuevo Registro
-</button>
+<link href="~/lib/PlantillaStartBootstrap/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" onclick="NuevoRegistro()" data-bs-toggle="modal"
+            data-bs-target="#ModalCategorias">
+            Nueva Categoria
+        </button>
+        <p style="color: red;"><b><u>CATEGORIAS</u></b></p>
+        <button class="btn btn-warning" onclick="Imprimir()">
+            <i class="fa-solid fa-download"></i> IMPRIMIR
+        </button>
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="ModalCategorias" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -15,42 +25,84 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="ModalTitulo"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <span class="notificacion d-flex justify-content-end"><b>*</b> Indica campo obligatorio</span>
             </div>
             <div class="modal-body">
-                <form class="needs-validation" novalidate>
+                <form class="formulario" novalidate>
                     <div class="row">
                         <input type="hidden" id="CategoriaID" value="0" />
-                        <div class="mb-3 position-relative">
-                            <label for="Descripcion" class="form-label">Descripcion</label>
-                            <input type="text" id="Descripcion" name="Descripcion" class="form-control des" required>
-                            <p id="error"></p>
-                        </div>
+                        <label class="mb-3">
+                            <span for="Descripcion" class="form-label"><b><u>Descripcion: </u><b
+                                        class="colorr">*</b></b></span>
+                            <input type="text" id="Descripcion" name="Descripcion" class="form-control des"
+                                placeholder="Solamente Letras" required>
+                            <div class="e form_hint" class="" id="error"></div>
+                        </label>
+                        @* <div class="mb-3">
+                        <label for="Descripcion" class="form-label">Descripcion</label>
+                        <input type="text" id="Descripcion" name="Descripcion" class="form-control des" required>
+                        <p id="error"></p>
+                        </div> *@
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" onclick="LimpiarModal()" class="btn btn-secondary"
                     data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar</button>
+                <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar Datos</button>
             </div>
         </div>
     </div>
 </div>
 
-<table class="table table-hover">
-    <thead>
-        <tr class="text-center">
-            <th>Descripción</th>
-            <th>Fecha de Registro</th>
-            <th><b><u>Opciones:</u></b></th>
-        </tr>
-    </thead>
-    <tbody id="tbody-categorias">
-    </tbody>
-</table>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Listado De Categorias</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered border-primary" id="tabla-imprimir" width="100%"
+                cellspacing="0">
+                <thead class="table-success">
+                    <tr class="text-center">
+                        <th>Descripción</th>
+                        <th>Fecha de Registro</th>
+                        <th><b><u>Opciones:</u></b></th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-categorias">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 
 @section Scripts
 {
     <script src="~/js/Categorias-1.0.0.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.0/jspdf.umd.min.js"></script>
+
+
+
+
+    @* <!-- Bootstrap core JavaScript-->
+<script src="~/lib/PlantillaStartBootstrap/vendor/jquery/jquery.min.js"></script>
+<script src="~/lib/PlantillaStartBootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="~/lib/PlantillaStartBootstrap/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+
+<!-- Page level plugins -->
+<script src="~/lib/PlantillaStartBootstrap/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="~/lib/PlantillaStartBootstrap/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="js/demo/datatables-demo.js"></script> *@
 }

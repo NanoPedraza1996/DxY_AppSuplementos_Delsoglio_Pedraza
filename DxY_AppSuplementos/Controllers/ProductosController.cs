@@ -88,7 +88,7 @@ public class ProductosController : Controller
                     {
                         Nombre = nombre.ToUpper(),
                         Descripcion = descripcion,
-                        FechaRegistro = fechaRegistro,
+                        FechaRegistro = DateTime.Now,
                         PrecioCompra = precioCompra,
                         PrecioVenta = precioVenta,
                         Stock = stock,
@@ -111,20 +111,27 @@ public class ProductosController : Controller
 
                     _contexto.Add(producto);
                     _contexto.SaveChanges();
-                    resultado = "Se Creo Correctamente.";
+
+                }
+                else
+                {
+                    resultado = "El Producto Ya Existe.";
                 }
             }
             else
             {
-                // //QUIERE DECIR QUE VAMOS A EDITAR LA CATEGORIA
-                // var categoriaEditar = _contexto.Categorias.Where(c => c.CategoriaID == categoriaID).SingleOrDefault();
-                // if (categoriaEditar != null)
-                // {
-                //     // QUIERE DECIR QUE LA CATEGORIA EXISTE Y CONTINUA CON LA EDICION
-                //     categoriaEditar.Descripcion = descripcion;
-                //     categoriaEditar.FechaRegistro = DateTime.Now;
-                //     _contexto.SaveChanges();
-                // }
+                //QUIERE DECIR QUE VAMOS A EDITAR LA CATEGORIA
+                var productoEditar = _contexto.Productos.Where(p => p.ProductoID == productoID).SingleOrDefault();
+                if (productoEditar != null)
+                {
+                    productoEditar.Nombre = nombre.ToUpper();
+                    productoEditar.Descripcion = descripcion;
+                    productoEditar.FechaRegistro = DateTime.Now;
+                    productoEditar.PrecioCompra = precioCompra;
+                    productoEditar.PrecioVenta = precioVenta;
+                    productoEditar.CategoriaID = categoriaID;
+                    _contexto.SaveChanges();
+                }
             }
 
             // }

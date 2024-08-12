@@ -17,3 +17,13 @@ public class DetalleVenta
 
     public virtual Producto? Producto { get; set; }
 }
+
+public class MostrarVistaDetalleVenta
+{
+    public int DetalleVentaID { get; set; }
+    public decimal PrecioVenta { get; set; }
+    public int Cantidad { get; set; }
+    public decimal SubTotal { get; set; }
+    public int VentaID { get; set; }
+    public int ProductoID { get; set; }
+}

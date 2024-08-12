@@ -3,39 +3,32 @@
 }
 
 <!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <h5 class="modal-title" id="staticBackdropLabel1">Modal titleq</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="row">
-                        <input type="hidden" id="PromocionID" value="0" />
-                        <div class="mb-3 col-12">
-                            <label for="Nombre" class="form-label"><b>Nombre:</b></label>
-                            <input type="text" id="Nombre" class="form-control" style="text-transform:uppercase"
-                                placeholder="Nombre Promocion">
-                        </div>
-                        @* <div class="mb-3 col-12">
-                        <label for="TotalAPagar" class="form-label"><b>Total A Pagar:</b></label>
-                        <input type="number" id="TotalAPagar" class="form-control" style="text-transform:uppercase"
-                        placeholder="Total A Pagar">
-                        </div> *@
-                        <div class="mb-3 col-6">
-                            <label for="FechaRegistro" class="form-label"><b>Fecha De Registro:</b></label>
-                            <input type="date" id="FechaRegistro" class="form-control"
-                                value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-                        </div>
-                    </div>
-                </form>
+                <table class="table">
+                    <thead>
+                        <tr class="text-center">
+                            <th>Cliente</th>
+                            <th>Nombre Del Producto </th>
+                            <th>Precio De Venta</th>
+                            <th>Cantidad</th>
+                            <th>SubTotal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaDetalleVenta">
+                    </tbody>
+                </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" onclick="GuardarPromocion()" class="btn btn-primary">Guardar Datos</button>
+                <button type="button" onclick="GuardarPromocion()" class="btn btn-primary">Guardar</button>
             </div>
         </div>
     </div>
@@ -54,7 +47,7 @@
             <th>Opciones</th>
         </tr>
     </thead>
-    <tbody id="TablaPromocionCreado">
+    <tbody id="TablaVenta">
     </tbody>
 </table>
 

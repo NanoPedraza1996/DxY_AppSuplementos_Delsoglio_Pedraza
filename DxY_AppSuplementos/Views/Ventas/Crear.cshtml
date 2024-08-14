@@ -1,17 +1,67 @@
 @{
     ViewData["Title"] = "Crear Ventas";
 }
-
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Crear Detalle Venta</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="staticBackdropLabel">Crear Venta y Detalle</h5>
             </div>
             <div class="modal-body">
+                @* <h4 class="text-center text-primary">Crear Ventas</h4>
+                <hr /> *@
+                <div class="card shadow mb-6">
+                    <div class="card-header py-4">
+                        <form asp-action="Crear">
+                            <div class="row d-flex justify-content-evenly">
+                                <input type="hidden" id="VentaID" value="0" />
+                                <div class="mb-3 col-4">
+                                    <label for="ClienteID" class="form-label"><b>Cliente</b></label>
+                                    @Html.DropDownList("ClienteID", null, htmlAttributes: new
+                                        {
+                                            @class = "form-control",
+                                            name = "ClienteID"
+                                        })
+                                </div>
+                                <div class="mb-3 col-4">
+                                    <label for="TotalAPagar" class="form-label"><b>Total A Pagar</b></label>
+                                    <input type="number" id="TotalAPagar" class="form-control"
+                                        style="text-transform:uppercase" placeholder="$">
+                                </div>
+                                @* <div class="mb-3 col-4">
+                                <label for="Fecha" class="form-label"><b>Fecha:</b></label>
+                                <input value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                </div> *@
+                                <div class="form-group contenido">
+                                    <button type="submit" onclick="GuardarVentas(), LimpiarModal()"
+                                        class="btn btn-success"><i class="fa-solid fa-check"></i> Finalizar
+                                        Venta</button>
+                                    @* <input type="submit" onclick="GuardarVentas(), LimpiarModal()"
+                                    value="Finalizar Venta" class="btn btn-success" /> *@
+                                    <button type="buton" onclick="CancelarVenta(), LimpiarModal()"
+                                        class="btn btn-danger"><i class="fa-solid fa-xmark"></i> Cancelar
+                                        Venta</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <hr />
+                <div class="card shadow">
+                    <div class="card-header d-flex justify-content-center">
+                        <!-- Button trigger modal -->
+                        @* <button type="button" class="btn btn-primary" onclick="ListadoDetalleVentaTemporal()"
+                        data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        Crear Venta Venta
+                        </button> *@
+                        <p style="color: red;"><b><u>Añadir Detalle De Venta</u></b></p>
+                        @* <button class="btn btn-warning" onclick="Imprimir()">
+                        <i class="fa-solid fa-download"></i> IMPRIMIR
+                        </button> *@
+                    </div>
+                </div>
                 <form>
                     <div class="row">
                         <input type="hidden" id="DetalleVentaID" value="0" />
@@ -33,78 +83,266 @@
                             <input value="" type="number" step="any" id="SubTotal" class="form-control"
                                 style="text-transform:uppercase" placeholder="SubTotal">
                         </div>
-                        @* <div class="mb-3 col-4">
-                        <label for="PrecioVenta" class="form-label"><b>Precio De Venta:</b></label>
-                        <input value="" type="number" step="any" id="PrecioVenta" class="form-control"
-                        style="text-transform:uppercase" placeholder="PrecioVenta">
-                        </div> *@
                     </div>
                 </form>
+                <button type="submit" onclick="AgregarDetalleVenta()" class="btn btn-primary">Guardar Datos</button>
+                <hr />
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary text-center"><i class="fa-solid fa-list"></i></h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive" style="overflow-y: hidden">
+                            <table class="table table-hover table-bordered border-primary" style="color: black;" id=""
+                                width="100%" cellspacing="0">
+                                <thead class="table-success">
+                                    <tr class="text-center">
+                                        <th>Precio De Venta</th>
+                                        <th>Cantidades</th>
+                                        <th>SubTotal</th>
+                                        <th>Nombre</th>
+                                        <th>Opciones:</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="TablaVentaCreado">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-secondary" onclick="LimpiarModal()" data-bs-dismiss="modal"><i
+                        class="fa-solid fa-xmark"></i> Cancelar</button>
                 <button type="submit" onclick="AgregarDetalleVenta()" class="btn btn-primary">Guardar Datos</button>
             </div>
         </div>
     </div>
 </div>
 
-<h4>Crear Ventas</h4>
-<hr />
-@* <div class="row">
-<div class="col-md-4"> *@
-<form asp-action="Crear">
-    <div class="row">
-        <input type="hidden" id="VentaID" value="0" />
-        <div class="mb-3 col-4">
-            <label for="ClienteID" class="form-label"><b>Cliente:</b></label>
-            @Html.DropDownList("ClienteID", null, htmlAttributes: new
-                {
-                    @class = "form-control",
-                    name = "ClienteID"
-                })
-        </div>
-        <div class="mb-3 col-4">
-            <label for="TotalAPagar" class="form-label"><b>Total A Pagar:</b></label>
-            <input type="number" id="TotalAPagar" class="form-control" style="text-transform:uppercase"
-                placeholder="TotalAPagar">
-        </div>
-        <div class="mb-3 col-4">
-            <label for="Fecha" class="form-label"><b>Fecha:</b></label>
-            <input type="submit" id="Fecha" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-        </div>
-        <div class="form-group contenido">
-            <input type="submit" onclick="GuardarVentas()" value="Finalizar Venta" class="btn btn-success" />
-            <button type="buton" onclick="CancelarVenta()" class="btn btn-danger">Cancelar Venta</button>
+
+
+
+
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" onclick="ListadoDetalleVentaTemporal()" data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop">
+            <i class="fa-solid fa-plus"></i> Crear Venta
+        </button>
+        <p style="color: red;"><b><u>Ventas</u></b></p>
+        <button class="btn btn-warning" onclick="Imprimir()">
+            <i class="fa-solid fa-print"></i> IMPRIMIR
+        </button>
+    </div>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary text-center"><i class="fa-solid fa-list"></i></h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive" style="overflow-y: hidden">
+            <table class="table table-hover table-bordered border-primary" style="color: black;" id="Imprimir"
+                width="100%" cellspacing="0">
+                <thead class="table-success">
+                    <tr class="text-center">
+                        <th><i class="fa-solid fa-user"></i> Cliente</th>
+                        <th><span>$</span> Total</th>
+                        <th><i class="fa-solid fa-list"></i> Fecha</th>
+                        <th><i class="fa-solid fa-gears"></i> Opciones</th>
+                    </tr>
+                </thead>
+                <tbody id="TablaVenta">
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel1">Detalle De La Venta</h5>
+            </div>
+            <div class="modal-body">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary text-center"><i class="fa-solid fa-list"></i></h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive" style="overflow-y: hidden">
+                            <table class="table table-hover table-bordered border-primary" style="color: black;"
+                                id="Imprimirr" width="100%" cellspacing="0">
+                                <thead class="table-success">
+                                    <tr class="text-center">
+                                        <th>Cliente</th>
+                                        <th>Nombre Del Producto </th>
+                                        <th>Precio De Venta</th>
+                                        <th>Cantidad</th>
+                                        <th>SubTotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaDetalleVenta">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i
+                        class="fa-solid fa-xmark"></i> Cancelar</button>
+                <button class="btn btn-warning" onclick="Imprimir()">
+                    <i class="fa-solid fa-print"></i> IMPRIMIR
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* <!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="staticBackdropLabel">Crear Detalle Venta</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+<form>
+<div class="row">
+<input type="hidden" id="DetalleVentaID" value="0" />
+<div class="mb-3 col-12">
+<label for="ProductoID" class="form-label"><b>Productos:</b></label>
+@Html.DropDownList("ProductoID", null, htmlAttributes: new
+{
+@class = "form-control",
+name = "ProductoID"
+})
+</div>
+<div class="mb-3 col-6">
+<label for="Cantidad" class="form-label"><b>Cantidades:</b></label>
+<input type="number" id="Cantidad" class="form-control" style="text-transform:uppercase"
+placeholder="Cantidad">
+</div>
+<div class="mb-3 col-6">
+<label for="SubTotal" class="form-label"><b>SubTotal:</b></label>
+<input value="" type="number" step="any" id="SubTotal" class="form-control"
+style="text-transform:uppercase" placeholder="SubTotal">
+</div>
+</div>
 </form>
-@* </div>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+<button type="submit" onclick="AgregarDetalleVenta()" class="btn btn-primary">Guardar Datos</button>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<h4 class="text-center text-primary">Crear Ventas</h4>
+<hr />
+<div class="card shadow mb-4">
+<div class="card-header py-3">
+<form asp-action="Crear">
+<div class="row">
+<input type="hidden" id="VentaID" value="0" />
+<div class="mb-3 col-4">
+<label for="ClienteID" class="form-label"><b>Cliente:</b></label>
+@Html.DropDownList("ClienteID", null, htmlAttributes: new
+{
+@class = "form-control",
+name = "ClienteID"
+})
+</div>
+<div class="mb-3 col-4">
+<label for="TotalAPagar" class="form-label"><b>Total A Pagar:</b></label>
+<input type="number" id="TotalAPagar" class="form-control" style="text-transform:uppercase"
+placeholder="TotalAPagar">
+</div>
+<div class="mb-3 col-4">
+<label for="Fecha" class="form-label"><b>Fecha:</b></label>
+<input type="submit" id="Fecha" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+</div>
+<div class="form-group contenido">
+<input type="submit" onclick="GuardarVentas()" value="Finalizar Venta" class="btn btn-success" />
+<button type="buton" onclick="CancelarVenta()" class="btn btn-danger">Cancelar Venta</button>
+</div>
+</div>
+</form>
+</div>
+</div>
+
+<hr />
+
+
+<div class="card shadow mb-4">
+<div class="card-header py-3">
+<h6 class="m-0 font-weight-bold text-primary text-center"><i class="fa-solid fa-list"></i></h6>
+</div>
+<div class="card-body">
+<div class="table-responsive" style="overflow-y: hidden">
+<table class="table table-hover table-bordered border-primary" style="color: black;" id="Imprimir"
+width="100%" cellspacing="0">
+<thead class="table-success">
+<tr class="text-center">
+<th>Precio De Venta</th>
+<th>Cantidades</th>
+<th>SubTotal</th>
+<th>Nombre</th>
+<th>Opciones:</th>
+
+<th><!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" onclick="ListadoDetalleVentaTemporal()"
+data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+Cargar Detalle Venta
+</button>
+</th>
+</tr>
+</thead>
+<tbody id="TablaVentaCreado">
+</tbody>
+</table>
+</div>
+</div>
 </div> *@
 
-<table class="table">
-    <thead>
-        <tr class="text-center">
-            <th>Precio De Venta</th>
-            <th>Cantidades</th>
-            <th>SubTotal</th>
-            <th>Nombre</th>
-            <th>Opciones:</th>
-
-            <th><!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" onclick="ListadoDetalleVentaTemporal()"
-                    data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                    Cargar Detalle Venta
-                </button>
-            </th>
-        </tr>
-    </thead>
-    <tbody id="TablaVentaCreado">
-    </tbody>
-</table>
 
 
 @section Scripts
 {
     <script src="~/js/Ventas-1.0.0.js"></script>
+
+    <script src="~/js/DetalleVentas-1.0.0.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 }

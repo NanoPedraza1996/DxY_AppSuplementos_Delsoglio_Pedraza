@@ -16,4 +16,6 @@ public class Cliente
     public bool Disponibilidad { get; set; }
 
     public virtual ICollection<Venta>? Ventas { get; set; }
+
+    public virtual ICollection<Pedido>? Pedidos { get; set; }
 }

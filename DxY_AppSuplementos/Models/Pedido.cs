@@ -5,12 +5,16 @@ namespace DxY_AppSuplementos.Models;
 
 public class Pedido
 {
+    [Key]
     public int PedidoID { get; set; }
-    //public int ClienteID {get; set;}
+
     public decimal TotalAPagar { get; set; }
     public Estado Estado { get; set; }
     public DateTime FechaRegistro { get; set; }
     //public DateTime CondicionesDePago {get; set;}
+
+    public int ClienteID { get; set; }
+    public virtual Cliente? Cliente { get; set; }
 
     public virtual ICollection<DetallePedido>? DetallePedidos { get; set; }
 }

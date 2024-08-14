@@ -4,6 +4,7 @@ using DxY_AppSuplementos.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DxY_AppSuplementos.Migrations.DxY_Db
 {
     [DbContext(typeof(DxY_DbContext))]
-    partial class DxY_DbContextModelSnapshot : ModelSnapshot
+    [Migration("20240812202826_DetallePedidoYTemporal")]
+    partial class DetallePedidoYTemporal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

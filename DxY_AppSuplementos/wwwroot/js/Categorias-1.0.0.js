@@ -88,7 +88,10 @@ function AbrirModalEditar(categoriaID) {
             let categoria = categorias[0];
 
             document.getElementById("CategoriaID").value = categoriaID;
+            // document.getElementById("Descripcion").style.display = "nome";
             $("#ModalTitulo").text("Editar Categoria");
+            // document.querySelector("#Descripcion");
+            // Descripcion.style.display = "nome"
             document.getElementById("Descripcion").value = categoria.descripcion;
             $("#ModalCategorias").modal("show");
         },
@@ -185,14 +188,17 @@ function DesahabilitarCategoria(categoriaID, disponibilidad) {
 
 
 
+
+
 function GuardarRegistro() {
-    $("#error").text("");
+    $("#Error").text("");
     let categoriaID = document.getElementById("CategoriaID").value;
     let descripcion = document.getElementById("Descripcion").value;
+    // const expreciones = { descripcion: /^[a-zA-Z0-9\-\_]{4,16}$/ }
 
     let guardar = true;
     if (!descripcion) {
-        $("#error").text("*Debes Ingresar una Descripcion");
+        $("#Error").text("Debes Ingresar Una Descripcion");
         guardar = false;
     }
 
@@ -201,7 +207,7 @@ function GuardarRegistro() {
             url: '../../Categorias/GuardarCategoria',
             data: { categoriaID: categoriaID, descripcion: descripcion },
             type: 'POST',
-            // dataType: 'json',
+            //dataType: 'json',
             success: function (resultado) {
                 if (resultado == "") {
                     Swal.fire({
@@ -212,7 +218,6 @@ function GuardarRegistro() {
                         timer: 1200
                     });
                     ListadoCategorias();
-                    $("#ModalCategorias").modal("hide");
                 }
                 else {
                     Swal.fire({
@@ -228,19 +233,13 @@ function GuardarRegistro() {
             }
         });
     }
-    return false;
+    return false
 }
 
 
 
 function Imprimir() {
-    var doc = new jsPDF({
-        orientation: "landscape",
-        unit: "in",
-        format: [4, 2]
-    });
-    doc.text("Hello world!", 1, 1);
-    doc.save("a4.pdf");
+    var doc = new jsPDF();
 
     var totalPagesExp = "{total_pages_count_string}";
     var pageContent = function (data) {
@@ -272,14 +271,14 @@ function Imprimir() {
     var dateString = today.toLocaleDateString(); // Format date as needed
     doc.setFontSize(12);
     doc.setFontStyle('normal');
-    doc.text('Fecha: ' + dateString, 14, 32);
+    doc.text('Fecha Actual: ' + dateString, 14, 32);
 
-    var elem = document.getElementById("tabla-imprimir");
+    var elem = document.getElementById("Imprimir");
     var res = doc.autoTableHtmlToJson(elem);
 
     // Remove last two columns
-    res.columns = res.columns.slice(0, -2);
-    res.data = res.data.map(row => row.slice(0, -2));
+    res.columns = res.columns.slice(0, -1);
+    res.data = res.data.map(row => row.slice(0, -1));
 
     doc.autoTable(res.columns, res.data, {
         addPageContent: pageContent,
@@ -287,7 +286,8 @@ function Imprimir() {
         headStyles: { halign: 'center' }, // Center align headers
         columnStyles: {
             0: { halign: 'center', fontSize: 7 },
-            1: { halign: 'center', fontSize: 7 }
+            1: { halign: 'center', fontSize: 7 },
+            2: { halign: 'center', fontSize: 7 }
         },
         styles: { halign: 'center' }, // Center align all cell content
         margin: { top: 40 } // Adjust top margin for title

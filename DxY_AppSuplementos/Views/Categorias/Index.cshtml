@@ -2,7 +2,7 @@
     ViewData["Title"] = "Categorias";
 }
 
-<link href="~/lib/PlantillaStartBootstrap/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+@* <link href="~/lib/PlantillaStartBootstrap/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"> *@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
@@ -13,7 +13,7 @@
         </button>
         <p style="color: red;"><b><u>CATEGORIAS</u></b></p>
         <button class="btn btn-warning" onclick="Imprimir()">
-            <i class="fa-solid fa-download"></i> IMPRIMIR
+            <i class="fa-solid fa-print"></i> IMPRIMIR
         </button>
     </div>
 </div>
@@ -25,44 +25,40 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="ModalTitulo"></h5>
-                <span class="notificacion d-flex justify-content-end"><b>*</b> Indica campo obligatorio</span>
+                <span class="notificacion d-flex justify-content-end"><b>* </b> Indica campo obligatorio</span>
             </div>
-            <div class="modal-body">
-                <form class="formulario" novalidate>
+            <form class="formulario needs-validation" novalidate>
+                <div class="modal-body">
                     <div class="row">
                         <input type="hidden" id="CategoriaID" value="0" />
                         <label class="mb-3">
-                            <span for="Descripcion" class="form-label"><b><u>Descripcion: </u><b
+                            <span for="Descripcion" class="form-label leb"><b>Descripcion: <b
                                         class="colorr">*</b></b></span>
                             <input type="text" id="Descripcion" name="Descripcion" class="form-control des"
-                                placeholder="Solamente Letras" required>
-                            <div class="e form_hint" class="" id="error"></div>
+                                placeholder="Solamente Letras" required />
+                            <div class="e invalid-feedback" id="Error">
+                            </div>
                         </label>
-                        @* <div class="mb-3">
-                        <label for="Descripcion" class="form-label">Descripcion</label>
-                        <input type="text" id="Descripcion" name="Descripcion" class="form-control des" required>
-                        <p id="error"></p>
-                        </div> *@
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" onclick="LimpiarModal()" class="btn btn-secondary"
-                    data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" onclick="GuardarRegistro()" class="btn btn-primary">Guardar Datos</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="LimpiarModal()" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" onclick="GuardarRegistro()" class="btn btn-primary">Guardar Datos</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Listado De Categorias</h6>
+        <h6 class=" m-0 font-weight-bold text-primary text-center"><i class="fa-solid fa-list"></i></h6>
     </div>
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-hover table-bordered border-primary" id="tabla-imprimir" width="100%"
-                cellspacing="0">
+        <div class="table-responsive" style="overflow-y: hidden">
+            <table class="table table-hover table-bordered border-primary" style="color: black;" id="Imprimir"
+                width="100%" cellspacing="0">
                 <thead class="table-success">
                     <tr class="text-center">
                         <th>Descripción</th>
@@ -83,10 +79,32 @@
     <script src="~/js/Categorias-1.0.0.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        @* const expreciones = {descripcion: /^[a-zA-Z0-9\-\_]{4,16}$/} *@
+            (function () {
+                'use strict'
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.querySelectorAll('.needs-validation')
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.0/jspdf.umd.min.js"></script>
+                // Loop over them and prevent submission
+                Array.prototype.slice.call(forms)
+                    .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (!form.checkValidity()) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
+                            form.classList.add('was-validated')
+                        }, false)
+                    })
+            })()
+    </script>
+
+    @* <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.0/jspdf.umd.min.js"></> *@
 
 
 

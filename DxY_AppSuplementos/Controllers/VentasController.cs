@@ -18,14 +18,16 @@ public class VentasController : Controller
         _context = context;
     }
 
-    public async Task<IActionResult> Index()
-    {
-        var ventas = _contexto.Ventas.Include(v => v.Cliente);
-        return View(await ventas.ToListAsync());
-    }
+    // public async Task<IActionResult> Index()
+    // {
+    //     var ventas = _contexto.Ventas.Include(v => v.Cliente);
+    //     return View(await ventas.ToListAsync());
+    // }
 
     public async Task<IActionResult> Crear()
     {
+        var ventas = _contexto.Ventas.Include(v => v.Cliente);
+
         var SelectListItem = new List<SelectListItem>
         {
             new SelectListItem {Value = "0", Text = "[SELECCIONE...]"}
@@ -34,13 +36,13 @@ public class VentasController : Controller
         var producto = await _contexto.Productos.Where(p => p.Eliminado == false).OrderBy(p => p.Descripcion).ToListAsync();
         var cliente = await _contexto.Clientes.Where(c => c.Disponibilidad == false).OrderBy(c => c.ClienteID).ToListAsync();
 
-        producto.Add(new Producto { ProductoID = 0, Descripcion = "[SELECCIONE...]" });
-        ViewBag.ProductoID = new SelectList(producto.OrderBy(p => p.Descripcion), "ProductoID", "Nombre");
+        producto.Add(new Producto { ProductoID = 0, Nombre = "[SELECCIONE...]" });
+        ViewBag.ProductoID = new SelectList(producto.OrderBy(p => p.Nombre), "ProductoID", "Nombre");
 
         cliente.Add(new Cliente { ClienteID = 0, NombreCompleto = "[SELECCIONE...]" });
         ViewBag.ClienteID = new SelectList(cliente.OrderBy(p => p.ClienteID), "ClienteID", "NombreCompleto");
 
-        return View();
+        return View(ventas);
     }
 
 

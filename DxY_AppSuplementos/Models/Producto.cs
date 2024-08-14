@@ -68,6 +68,8 @@ public class Producto
 
     public virtual ICollection<DetalleVenta>? DetalleVentas { get; set; }
 
+    public virtual ICollection<DetallePedido>? DetallePedidos { get; set; }
+
     [NotMapped]
     public string? ImagenBase64 { get; set; }
 
@@ -75,7 +77,7 @@ public class Producto
 
 
 
-// public class VistaProductos
+// public class VistaProductosMostrar
 // {
 //     public int ProductoID { get; set; }
 
@@ -104,5 +106,7 @@ public class Producto
 
 
 //     public byte[]? Imagen { get; set; }
+//     public string? TipoImagen { get; set; }
+//     public string? NombreImagen { get; set; }
 
 // }

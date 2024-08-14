@@ -37,10 +37,11 @@ public class ProductosController : Controller
 
     public JsonResult BuscarProducto(int? id)
     {
+        //List<VistaProductosMostrar> ProductosMostrar = new List<VistaProductosMostrar>();
         var productos = _contexto.Productos.ToList();
         if (id != null)
         {
-            productos = productos.Where(p => p.ProductoID == id).OrderBy(p => p.CategoriaID).ToList();
+            productos = productos.Where(p => p.ProductoID == id).ToList();
         }
 
         foreach (var producto in productos)
@@ -49,9 +50,10 @@ public class ProductosController : Controller
             {
                 producto.ImagenBase64 = Convert.ToBase64String(producto.Imagen);
             }
+
         }
 
-        // var mostrarProducto = productos.Select(p => new VistaProductos
+        // var mostrarProducto = productos.Select(p => new VistaProductosMostrar
         // {
         //     ProductoID = p.ProductoID,
         //     Nombre = p.Nombre,
@@ -63,7 +65,6 @@ public class ProductosController : Controller
         //     Stock = p.Stock,
         //     CategoriaID = p.CategoriaID,
         //     CategoriaIDNombre = p.Categoria.Descripcion,
-        //     Imagen = p.Imagen
 
         // }).ToList();
 
@@ -141,12 +142,58 @@ public class ProductosController : Controller
         return Json(resultado);
     }
 
-    public JsonResult EliminarProducto(int productoID)
+    public JsonResult DesahabilitarProducto(int productoID, int disponibilidad)
+    {
+        string resultado = "";
+        var producto = _contexto.Productos.Find(productoID);
+        if (producto != null)
+        {
+            if (disponibilidad == 0)
+            {
+                producto.Disponibilidad = false;
+                _contexto.SaveChanges();
+            }
+            else
+            {
+                var ProducEnDetaVent = _contexto.DetalleVentas.Where(v => v.ProductoID == productoID).Count();
+                if (ProducEnDetaVent == 0)
+                {
+                    producto.Disponibilidad = true;
+                    _contexto.SaveChanges();
+                }
+                else
+                {
+                    resultado = "No Se Pudo Deshabilitar Porque Esta Realcionado Con Productos.";
+                }
+            }
+            // resultado = "Se Pudo Deshabilitar Correctamente.";
+        }
+
+
+        return Json(resultado);
+    }
+
+    public JsonResult EliminarProducto(int productoID, int eliminado)
     {
         string resultado = "";
         var eliminarProducto = _contexto.Productos.Find(productoID);
-        _contexto.Remove(eliminarProducto);
-        _contexto.SaveChanges();
+        if (eliminarProducto != null)
+        {
+            var ProducEnDetaVenta = _contexto.DetalleVentas.Where(d => d.ProductoID == productoID).Count();
+            if (ProducEnDetaVenta == 0)
+            {
+                eliminado = 0;
+                _contexto.Remove(eliminarProducto);
+                _contexto.SaveChanges();
+            }
+            else
+            {
+                eliminado = 1;
+                _contexto.SaveChanges();
+                resultado = "NO";
+            }
+        }
+
         return Json(resultado);
     }
 }

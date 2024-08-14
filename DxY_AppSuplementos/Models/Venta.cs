@@ -9,8 +9,8 @@ public class Venta
     public int VentaID { get; set; }
     public DateTime Fecha { get; set; }
     public decimal TotalAPagar { get; set; }
-    public int ClienteID { get; set; }
 
+    public int ClienteID { get; set; }
     public virtual Cliente? Cliente { get; set; }
 
     public virtual ICollection<DetalleVenta>? DetalleVentas { get; set; }

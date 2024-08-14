@@ -1,10 +1,14 @@
 html {
-  font-size: 14px;
+  /* font-size: 5px; */
+  font-size: 3vw; 
+  
 }
 
 @media (min-width: 768px) {
   html {
-    font-size: 16px;
+    font-size: 14px;
+    /* font-family:Arial, Helvetica, sans-serif; */
+    /* font-size: 1vw; */
   }
 }
 
@@ -19,6 +23,7 @@ html {
 
 body {
   margin-bottom: 60px;
+  /* font-family:'Courier New', Courier, monospace; */
 }
 
 
@@ -42,20 +47,35 @@ body {
 }
 
 
-
+.des:focus{
+  border: 3px solid blue;
+  outline: none;
+  box-shadow: 3px 0px 30px rgba(red, green, blue, alpha);
+}
 .e {
-  color: red;
   text-align: center;
   position: absolute;
+  display: none;
 } 
+.e:active{
+  display: block;
+}
 
-.des:invalid {
+.leb:invalid{
+  color: red;
+}
+.leb:valid{
+  color: green;
+}
+
+
+/* .des:invalid {
   border: 2px solid red;
 }
 
 .des:valid:required  {
   border: 2px solid green;
-}
+} */
 
 
 .formulario {
@@ -73,6 +93,21 @@ body {
   color: red;
 }
 
+.tablee{
+  color: black;
+}
+
+/* .t{
+  left: 50%;
+  margin-left: -300px;
+  top: 50%;
+  margin-top: -300px;
+} */
+
+/* #Table{
+  margin: auto;
+  width="600" cellspacing="3" cellpadding="3" style="font-size: 10pt"
+} */
 
 
 

@@ -1,47 +1,50 @@
 window.onload = ListadoCategorias();
 
+
 function ListadoCategorias() {
+    let buscarnombre = $("#Buscarnombre").val();
+    let buscarfecha = $("#Buscarfecha").val();
     $.ajax({
         // la URL para la petición
         url: '../../Categorias/ListadoCategorias',
         // la información a enviar
         // (también es posible utilizar una cadena de datos)
-        data: {},
+        data: { Buscarfecha: buscarfecha, Buscarnombre: buscarnombre },
         // especifica si será una petición POST o GET
         type: 'POST',
         // el tipo de información que se espera de respuesta
         dataType: 'json',
         // código a ejecutar si la petición es satisfactoria;
         // la respuesta es pasada como argumento a la función
-        success: function (categorias) {
+        success: function (categoria) {
 
             $("#ModalCategorias").modal("hide");
             LimpiarModal();
 
-
             $("#tbody-categorias").empty();
-            $.each(categorias, function (index, categoria) {
+            $.each(categoria, function (index, categoria) {
                 // console.log(categoria)
+
                 let contenidoTabla = ``;
                 let botonHabilitar = '';
                 contenidoTabla += `
-                    <td class="text-center">
-                    <button type="button" class="btn btn-success" onclick="AbrirModalEditar(${categoria.categoriaID})"><i class="fa-solid fa-pen-to-square"></i></button>
-                    <button type="button" class="btn btn-danger" onclick="EliminarCategoria(${categoria.categoriaID})"><i class="fa-solid fa-trash"></i></button>
-                    <button type="button" class="btn btn-primary" onclick ="DesahabilitarCategoria(${categoria.categoriaID} ,1)"><i class="fa-solid fa-xmark"></i></button>
+                    <td class="text-center" id="ocultar">
+                    <button type="button" title="Editar" class="btn btn-success" onclick="AbrirModalEditar(${categoria.categoriaID})"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button type="button" title="Eliminar" class="btn btn-danger" onclick="Eliminar(${categoria.categoriaID})"><i class="fa-solid fa-trash"></i></button>
+                    <button type="button" title="Desahabilitar" class="btn btn-primary" onclick ="DesahabilitarCategoria(${categoria.categoriaID} ,1)"><i class="fa-solid fa-xmark"></i></button>
                     </td>`;
 
                 if (categoria.disponibilidad) {
                     botonHabilitar = 'table-danger';
                     contenidoTabla = `
                         <td class="text-center">
-                        <button type = "button" class = "btn btn-success" onclick = "DesahabilitarCategoria(${categoria.categoriaID} ,0)"><i class="fa-solid fa-check"></i></button>
+                        <button type = "button" title="Habilitar" class = "btn btn-success" onclick = "DesahabilitarCategorias(${categoria.categoriaID} ,0)"><i class="fa-solid fa-check"></i></button>
                         </td>`;
                 }
 
                 $("#tbody-categorias").append(
                     '<tr class=' + botonHabilitar + '>'
-                    + '<td class="text-center">' + categoria.descripcion + '</td><td class="text-center">'
+                    + '<td class="text-center" title="Nombre">' + categoria.descripcion + '</td><td title="Fecha de Registro" class="text-center ocultar550" id="ocultar">'
                     + categoria.fechaRegistroString + '</td>' + contenidoTabla +
                     '</tr>');
 
@@ -61,13 +64,15 @@ function ListadoCategorias() {
     });
 }
 
+
+
 function LimpiarModal() {
     document.getElementById("CategoriaID").value = 0;
     document.getElementById("Descripcion").value = "";
 }
 
 function NuevoRegistro() {
-    $("#ModalTitulo").text("Nueva Categoria");
+    $("#ModalTitulo").text("Ingresar Nueva Categoria");
 }
 
 function AbrirModalEditar(categoriaID) {
@@ -77,7 +82,7 @@ function AbrirModalEditar(categoriaID) {
         url: '../../Categorias/ListadoCategorias',
         // la información a enviar
         // (también es posible utilizar una cadena de datos)
-        data: { categoriaID: categoriaID },
+        data: { id: categoriaID },
         // especifica si será una petición POST o GET
         type: 'POST',
         // el tipo de información que se espera de respuesta
@@ -86,13 +91,11 @@ function AbrirModalEditar(categoriaID) {
         // la respuesta es pasada como argumento a la función
         success: function (categorias) {
             let categoria = categorias[0];
+            $("#ModalTitulo").text("Editar Categoria");
 
             document.getElementById("CategoriaID").value = categoriaID;
-            // document.getElementById("Descripcion").style.display = "nome";
-            $("#ModalTitulo").text("Editar Categoria");
-            // document.querySelector("#Descripcion");
-            // Descripcion.style.display = "nome"
             document.getElementById("Descripcion").value = categoria.descripcion;
+
             $("#ModalCategorias").modal("show");
         },
 
@@ -108,13 +111,13 @@ function AbrirModalEditar(categoriaID) {
 
 
 
-function EliminarCategoria(categoriaID, eliminado) {
+function Eliminar(categoriaID) {
     $.ajax({
         // la URL para la petición
         url: '../../Categorias/EliminarCategoria',
         // la información a enviar
         // (también es posible utilizar una cadena de datos)
-        data: { categoriaID: categoriaID, eliminado: eliminado },
+        data: { categoriaID: categoriaID },
         // especifica si será una petición POST o GET
         type: 'POST',
         // el tipo de información que se espera de respuesta
@@ -122,23 +125,36 @@ function EliminarCategoria(categoriaID, eliminado) {
         // código a ejecutar si la petición es satisfactoria;
         // la respuesta es pasada como argumento a la función
         success: function (resultado) {
-            if (resultado != "") {
+            if (resultado == "") {
+                Swal.fire({
+                    title: "Estas Seguro De Eliminarlo?",
+                    text: "¡No podrás revertir esto!",
+                    icon: "warning",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    // showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "SII, Eliminalo!",
+                    // showDenyButton: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: "¡Eliminado!",
+                            text: "Su archivo ha sido eliminado.",
+                            icon: "success"
+                        });
+                        ListadoCategorias();
+                    }
+
+                });
+            } else {
                 Swal.fire({
                     icon: "error",
                     title: "Vaya Vaya...",
                     text: "Parece Que Esta relacionado con Productos!",
                     // footer: '<a href="../../Views/Categorias/Index.cshtml">De Acuerdo</a>'
                 });
-            }
-            else {
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "¡Eliminado!",
-                    showConfirmButton: false,
-                    timer: 1200
-                });
-                ListadoCategorias();
             }
         },
 
@@ -172,8 +188,41 @@ function DesahabilitarCategoria(categoriaID, disponibilidad) {
             else {
                 Swal.fire({
                     position: "top-end",
-                    icon: "success",
+                    icon: "error",
                     title: "Deshabilitado!",
+                    showConfirmButton: false,
+                    timer: 1200
+                });
+                ListadoCategorias();
+            }
+        },
+        error: function (xhr, status) {
+            alert("Disculpe, Existio Un Problema.");
+        },
+    });
+}
+
+
+function DesahabilitarCategorias(categoriaID, disponibilidad) {
+    $.ajax({
+        url: '../../Categorias/DesahabilitarCategoria',
+        data: { categoriaID: categoriaID, disponibilidad: disponibilidad },
+        type: 'POST',
+        dataType: 'json',
+        success: function (resultado) {
+            if (resultado != "") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Vaya Vaya...",
+                    text: "Parece Que Esta relacionado con Productos!",
+                    // footer: '<a href="../../Views/Categorias/Index.cshtml">De Acuerdo</a>'
+                });
+            }
+            else {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Habilitado!",
                     showConfirmButton: false,
                     timer: 1200
                 });
@@ -191,49 +240,50 @@ function DesahabilitarCategoria(categoriaID, disponibilidad) {
 
 
 function GuardarRegistro() {
-    $("#Error").text("");
+    // $("#Error").text("");
     let categoriaID = document.getElementById("CategoriaID").value;
     let descripcion = document.getElementById("Descripcion").value;
-    // const expreciones = { descripcion: /^[a-zA-Z0-9\-\_]{4,16}$/ }
 
-    let guardar = true;
-    if (!descripcion) {
-        $("#Error").text("Debes Ingresar Una Descripcion");
-        guardar = false;
-    }
 
-    if (guardar) {
-        $.ajax({
-            url: '../../Categorias/GuardarCategoria',
-            data: { categoriaID: categoriaID, descripcion: descripcion },
-            type: 'POST',
-            //dataType: 'json',
-            success: function (resultado) {
-                if (resultado == "") {
-                    Swal.fire({
-                        position: "top-end",
-                        icon: "success",
-                        title: "¡Guardado!",
-                        showConfirmButton: false,
-                        timer: 1200
-                    });
-                    ListadoCategorias();
-                }
-                else {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Vaya Vaya...",
-                        text: "Parece Que Ya Existe Otra Descripcion!",
-                        footer: '<a href="../../Categorias/Index">Ver Existente</a>'
-                    });
-                }
-            },
-            error: function (xhr, status) {
-                console.log('Disculpe, existió un problema al guardar el registro');
+
+    // let guardar = true;
+    // if (!descripcion) {
+    //     $("#Error").text("Debes Ingresar Una Descripcion");
+    //     guardar = false;
+    // }
+
+    // if (guardar) {
+    $.ajax({
+        url: '../../Categorias/GuardarCategoria',
+        data: { categoriaID: categoriaID, descripcion: descripcion },
+        type: 'POST',
+        dataType: 'json',
+        success: function (resultado) {
+            if (resultado == "") {
+                // Swal.fire({
+                //     position: "top-end",
+                //     icon: "success",
+                //     title: "¡Guardado!",
+                //     showConfirmButton: false,
+                //     timer: 1200
+                // });
+                ListadoCategorias();
             }
-        });
-    }
-    return false
+            // else {
+            //     Swal.fire({
+            //         icon: "error",
+            //         title: "Vaya Vaya...",
+            //         text: "Parece Que Ya Existe Otra Descripcion!",
+            //         footer: '<a href="../../Categorias/Index">Ver Existente</a>'
+            //     });
+            // }
+        },
+        error: function (xhr, status) {
+            console.log('Disculpe, existió un problema al guardar el registro');
+        }
+    });
+    // }
+    // return false
 }
 
 

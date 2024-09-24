@@ -5,46 +5,48 @@ window.onload = BuscarProducto();
 
 function BuscarProducto() {
     // $("#TablaProducto").empty();
+    let buscarHasta = $("#buscarHasta").val();
+    let nombre = $("#nombre").val();
     $.ajax({
         url: '../../Productos/BuscarProducto',
-        data: {},
-        type: 'GET',
+        data: { BuscarHasta: buscarHasta, Nombre: nombre },
+        type: 'POST',
         dataType: 'json',
         success: function (productos) {
             $("#staticBackdrop").modal("hide");
-            LimpiarModal()
+            LimpiarModal();
 
             $("#TablaProducto").empty();
             $.each(productos, function (index, producto) {
                 let contenidoTabla = '';
                 let botonHabilitar = '';
-                contenidoTabla += '<button type="button" class="btn btn-success" onclick="AbrirModalProducto(' + producto.productoID + '), ocultarInput(' + producto.productoID + ')"><i class="fa-solid fa-pen-to-square"></i></Button>||'
-                    + '<button type="button" class="btn btn-danger" onclick="EliminarProducto(' + producto.productoID + ')"><i class="fa-solid fa-trash"></i></button>||'
-                    + '<button type="button" class="btn btn-primary" onclick ="DesahabilitarProducto(' + producto.productoID + ',1)"><i class="fa-solid fa-xmark"></i></button>'
+                contenidoTabla += '<button type="button" title="Editar" class="btn btn-success" onclick="AbrirModalProducto(' + producto.productoID + ')"><i class="fa-solid fa-pen-to-square"></i></Button>'
+                    + '<button type="button" title="Eliminar" class="btn btn-danger" onclick="Eliminar(' + producto.productoID + ')"><i class="fa-solid fa-trash"></i></button>'
+                    + '<button type="button" title="Desahabilitar" class="btn btn-primary" onclick ="DesahabilitarProducto(' + producto.productoID + ',1)"><i class="fa-solid fa-xmark"></i></button>'
 
                 if (producto.disponibilidad) {
                     botonHabilitar = 'table-danger';
                     contenidoTabla = `
-                    <button type = "button" class = "btn btn-success" onclick = "DesahabilitarProducto(${producto.productoID} ,0)"><i class="fa-solid fa-check"></i></button>`;
+                    <button type = "button" class = "btn btn-success" title="Habilitar" onclick = "DesahabilitarProductos(${producto.productoID} ,0)"><i class="fa-solid fa-check"></i></button>`;
                 }
 
 
-                let imagen = '<td></td>';
+                let imagen = '<td class="ocultar550"></td>';
                 if (producto.imagenBase64) {
-                    imagen = '<td style="width: 40px;"><img class="text-center rounded-circle" src="data:' + producto.tipoImagen + ';base64,' + producto.imagenBase64 + '" style="width: 40px;"/></td>';
+                    imagen = '<td class="ocultar550" title="Imagen" style="width: 40px;"><img class="text-center rounded-circle ocultar550" src="data:' + producto.tipoImagen + ';base64,' + producto.imagenBase64 + '" style="width: 40px;"/></td>';
                 }
 
                 $("#TablaProducto").append(
                     '<tr class=' + botonHabilitar + '>'
-                    + '<td>' + producto.nombre + '</td>'
-                    + '<td>' + producto.descripcion + '</td>'
-                    + '<td>' + producto.fechaRegistro + '</td>'
-                    + '<td>' + producto.precioCompra + '</td>'
-                    + '<td>' + producto.precioVenta + '</td>'
-                    + '<td>' + producto.stock + '</td>'
-                    + '<td>' + producto.categoriaID + '</td>'
+                    + '<td title="Nombre">' + producto.nombre + '</td>'
+                    + '<td title="Descripcion">' + producto.descripcion + '</td>'
+                    + '<td title="Fecha De Registro" class="ocultar550">' + producto.fechaRegistro + '</td>'
+                    + '<td title="Precio De Compra">' + producto.precioCompra + '</td>'
+                    + '<td title="Precio De Venta">' + producto.precioVenta + '</td>'
+                    + '<td title="Stock">' + producto.stock + '</td>'
+                    + '<td title="Categoria" class="ocultar550">' + producto.categoriaID + '</td>'
                     + imagen
-                    + '<td>' + contenidoTabla + '</td>'
+                    + '<td title="">' + contenidoTabla + '</td>'
                     + '</tr>'
                 );
             });
@@ -60,12 +62,12 @@ function AbrirModalProducto(productoID) {
     // BuscarProducto();
     $.ajax({
         url: '../../Productos/BuscarProducto',
-        data: { productoID: productoID },
+        data: { id: productoID },
         type: 'POST',
         dataType: 'json',
         success: function (productos) {
             var producto = productos[0];
-            //$("#staticBackdropLabel").text("Editar Producto");
+            $("#staticBackdropLabel").text("Editar Producto");
 
             document.getElementById("ProductoID").value = productoID;
             document.getElementById("Nombre").value = producto.nombre;
@@ -73,6 +75,8 @@ function AbrirModalProducto(productoID) {
             document.getElementById("PrecioCompra").value = producto.precioCompra;
             document.getElementById("PrecioVenta").value = producto.precioVenta;
             document.getElementById("CategoriaID").value = producto.categoriaID;
+            document.getElementById('ocultarr').style.display = 'none';
+
             $("#staticBackdrop").modal("show");
         },
         error: function (xhr, status) {
@@ -133,17 +137,8 @@ function GuardarProductos() {
                 dataType: 'json',
                 async: false,
                 success: function (resultado) {
-                    if (resultado == "") {
-                        // Swal.fire({
-                        //     position: "top-end",
-                        //     icon: "success",
-                        //     title: "¡Guardado!",
-                        //     showConfirmButton: false,
-                        //     timer: 1200
-                        // });
-                        $("#staticBackdrop").modal("hide");
-                        BuscarProducto();
-                    }
+                    BuscarProducto();
+                    $("#staticBackdrop").modal("hide");
                 },
                 cache: false,
                 contentType: false,
@@ -157,30 +152,43 @@ function GuardarProductos() {
 
 
 
-function EliminarProducto(productoID) {
+function Eliminar(productoID) {
     $.ajax({
         url: '../../Productos/EliminarProducto',
         data: { productoID: productoID },
         type: 'POST',
         dataType: 'json',
         success: function (resultado) {
-            if (resultado != "") {
+            if (resultado == "") {
+                Swal.fire({
+                    title: "Estas Seguro De Eliminarlo?",
+                    text: "¡No podrás revertir esto!",
+                    icon: "warning",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    // showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "SII, Eliminalo!",
+                    // showDenyButton: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: "¡Eliminado!",
+                            text: "Su archivo ha sido eliminado.",
+                            icon: "success"
+                        });
+                        BuscarProducto();
+                    }
+
+                });
+            } else {
                 Swal.fire({
                     icon: "error",
                     title: "Vaya Vaya...",
                     text: "Parece Que Esta relacionado con Ventas!",
                     // footer: '<a href="../../Views/Categorias/Index.cshtml">De Acuerdo</a>'
                 });
-            }
-            else {
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "¡Eliminado!",
-                    showConfirmButton: false,
-                    timer: 1200
-                });
-                BuscarProducto();
             }
         },
         error: function (xhr, status) {
@@ -191,6 +199,7 @@ function EliminarProducto(productoID) {
 
 
 function LimpiarModal() {
+    document.getElementById('ocultarr').style.display = 'block';
     document.getElementById("ProductoID").value = 0;
     document.getElementById("Nombre").value = "";
     document.getElementById("Descripcion").value = "";
@@ -201,12 +210,12 @@ function LimpiarModal() {
 }
 
 
-function ocultarInput() {
-    document.getElementById('ocultar').style.display = 'none';
-}
-function hideInput() {
-    document.getElementById('ocultar').style.display = 'block';
-}
+// function ocultarInput() {
+//     document.getElementById('ocultar').style.display = 'none';
+// }
+// function hideInput() {
+//     document.getElementById('ocultar').style.display = 'block';
+// }
 
 
 function DesahabilitarProducto(productoID, disponibilidad) {
@@ -228,8 +237,42 @@ function DesahabilitarProducto(productoID, disponibilidad) {
             else {
                 Swal.fire({
                     position: "top-end",
-                    icon: "success",
+                    icon: "error",
                     title: "Deshabilitado!",
+                    showConfirmButton: false,
+                    timer: 1200
+                });
+                BuscarProducto();
+            }
+        },
+        error: function (xhr, status) {
+            alert("Disculpe, Existio Un Problema.");
+        },
+    });
+}
+
+
+function DesahabilitarProductos(productoID, disponibilidad) {
+    $.ajax({
+        url: '../../Productos/DesahabilitarProducto',
+        data: { productoID: productoID, disponibilidad: disponibilidad },
+        type: 'POST',
+        dataType: 'json',
+        success: function (resultado) {
+            // BuscarProducto();
+            if (resultado != "") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Vaya Vaya...",
+                    text: "Parece Que Esta relacionado con Productos!",
+                    // footer: '<a href="../../Views/Categorias/Index.cshtml">De Acuerdo</a>'
+                });
+            }
+            else {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "habilitado!",
                     showConfirmButton: false,
                     timer: 1200
                 });
@@ -268,6 +311,16 @@ function Imprimir() {
         doc.setFontStyle('bold');
         doc.text(str, 17, pageHeight - 10);
     };
+
+    // var pdf = new jsPDF();
+    // pdf.text(20,20,"Agregar imagenes a un PDF!");
+    /// Codigo para agregar una imagen
+    var image1 = new Image();
+    image1.src = 'Suplementos.jpg'; /// URL de la imagen
+    doc.addImage(image1, 'jepg', 25, 30, 170, 180); // Agregar la imagen al PDF (X, Y, Width, Height)
+    /////
+    // pdf.save("mipdf.pdf");
+
 
     // Add title and date to the first page
     doc.setFontSize(18);

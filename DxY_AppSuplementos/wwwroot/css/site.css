@@ -1,14 +1,46 @@
 html {
   /* font-size: 5px; */
-  font-size: 3vw; 
+  font-size: 13px; 
   
 }
 
 @media (min-width: 768px) {
   html {
-    font-size: 14px;
+    /* font-size: 10px; */
     /* font-family:Arial, Helvetica, sans-serif; */
     /* font-size: 1vw; */
+  }
+}
+
+@media (max-width: 600px){
+  .ocultar550 {
+    display: none;
+  }
+
+  /* .primero{
+    margin-left: 30px;
+    margin-top: 5px;
+    width: 50%;
+    display: block;
+    position: relative;
+  } */
+}
+
+
+@media (max-width: 460px){
+  .display{
+    display: block;
+    text-align: center;
+  }
+}
+
+.float{
+  float: right;
+}
+
+@media (max-width: 300px){
+  .displays{
+    display: block;
   }
 }
 
@@ -77,6 +109,9 @@ body {
   border: 2px solid green;
 } */
 
+.lugar{
+justify-content: flex-start;
+}
 
 .formulario {
 	margin:0;
@@ -84,7 +119,7 @@ body {
 }
 .notificacion {
 	color:#d45252; 
-	margin:5px 0 0 0; 
+	/* margin:5px 0 0 0;  */
 	display:inline;
 	float:right;
 }
@@ -110,14 +145,6 @@ body {
 } */
 
 
-
-
-
-
-
-
-
-
 :-moz-placeholder {
 	color: blue;
 }
@@ -128,3 +155,20 @@ body {
 *:focus {
   outline: none;
 }
+
+
+
+.imgs{
+  padding: 25px 0;
+  width: 300px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.logo{
+  width: 50px; 
+  border-radius: 30px;
+}
+
+
+

@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using DxY_AppSuplementos.Data;
 using DxY_AppSuplementos.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -27,46 +28,48 @@ public class ProductosController : Controller
 
         var categoria = _contexto.Categorias.Where(t => t.Eliminado == false).OrderBy(c => c.Descripcion).ToList();
 
+        var categoriaID = categoria.ToList();
+
         categoria.Add(new Categoria { CategoriaID = 0, Descripcion = "[SELECCIONE..]" });
         ViewBag.CategoriaID = new SelectList(categoria.OrderBy(t => t.Descripcion), "CategoriaID", "Descripcion");
 
+        categoriaID.Add(new Categoria { CategoriaID = 0, Descripcion = "[TODOS...]" });
+        ViewBag.BuscarCategoriaID = new SelectList(categoriaID.OrderBy(c => c.Descripcion), "CategoriaID", "Descripcion");
 
         return View();
     }
 
 
-    public JsonResult BuscarProducto(int? id)
+    public JsonResult BuscarProducto(int? id, DateTime? BuscarHasta, string? Nombre)
     {
-        //List<VistaProductosMostrar> ProductosMostrar = new List<VistaProductosMostrar>();
         var productos = _contexto.Productos.ToList();
         if (id != null)
         {
             productos = productos.Where(p => p.ProductoID == id).ToList();
         }
-
-        foreach (var producto in productos)
+        if (BuscarHasta != null && !string.IsNullOrEmpty(Nombre))
         {
-            if (producto.Imagen != null)
-            {
-                producto.ImagenBase64 = Convert.ToBase64String(producto.Imagen);
-            }
-
+            productos = productos.Where(p => p.FechaRegistro.Date == BuscarHasta && p.Nombre.Contains(Nombre)).ToList();
+        }
+        else if (BuscarHasta != null && Nombre == null)
+        {
+            productos = productos.Where(p => p.FechaRegistro.Date == BuscarHasta).ToList();
+        }
+        else if (BuscarHasta == null && !string.IsNullOrEmpty(Nombre))
+        {
+            productos = productos.Where(p => p.Nombre.Contains(Nombre)).ToList();
         }
 
-        // var mostrarProducto = productos.Select(p => new VistaProductosMostrar
-        // {
-        //     ProductoID = p.ProductoID,
-        //     Nombre = p.Nombre,
-        //     Descripcion = p.Descripcion,
-        //     FechaRegistro = p.FechaRegistro,
-        //     FechaRegistroString = p.FechaRegistro.ToString("yyyy/MM/dd"),
-        //     PrecioCompra = p.PrecioCompra,
-        //     PrecioVenta = p.PrecioVenta,
-        //     Stock = p.Stock,
-        //     CategoriaID = p.CategoriaID,
-        //     CategoriaIDNombre = p.Categoria.Descripcion,
+        productos = productos.ToList();
 
-        // }).ToList();
+
+        foreach (var productoo in productos)
+        {
+            if (productoo.Imagen != null)
+            {
+                productoo.ImagenBase64 = Convert.ToBase64String(productoo.Imagen);
+            }
+        }
 
         return Json(productos);
     }

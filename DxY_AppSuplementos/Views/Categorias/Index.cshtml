@@ -7,13 +7,13 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" onclick="NuevoRegistro()" data-bs-toggle="modal"
-            data-bs-target="#ModalCategorias">
-            Nueva Categoria
+        <button type="button" class="btn btn-primary" title="Cargar Nueva Categoria" onclick="NuevoRegistro()"
+            data-bs-toggle="modal" data-bs-target="#ModalCategorias">
+            <i title="Cargar Nueva Categoria" class="fa-solid fa-plus"></i><i class="fa-solid fa-plus"></i>
         </button>
-        <p style="color: red;"><b><u>CATEGORIAS</u></b></p>
-        <button class="btn btn-warning" onclick="Imprimir()">
-            <i class="fa-solid fa-print"></i> IMPRIMIR
+
+        <button type="button" class="btn btn-warning" title="Imprimir Tabla Categorias" onclick="Imprimir()">
+            <i class="fa-solid fa-download"></i>
         </button>
     </div>
 </div>
@@ -25,15 +25,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="ModalTitulo"></h5>
-                <span class="notificacion d-flex justify-content-end"><b>* </b> Indica campo obligatorio</span>
             </div>
             <form class="formulario needs-validation" novalidate>
                 <div class="modal-body">
                     <div class="row">
                         <input type="hidden" id="CategoriaID" value="0" />
                         <label class="mb-3">
-                            <span for="Descripcion" class="form-label leb"><b>Descripcion: <b
+                            <span for="Descripcion" class="form-label"><b><u>Descripcion:</u> <b
                                         class="colorr">*</b></b></span>
+                            <span class="notificacion form-label"><b>* </b> <u>Indica Campo Obligatorio</u></span>
                             <input type="text" id="Descripcion" name="Descripcion" class="form-control des"
                                 placeholder="Solamente Letras" required />
                             <div class="e invalid-feedback" id="Error">
@@ -50,24 +50,50 @@
         </div>
     </div>
 </div>
+@*
+<div class="input-group has-validation">
+<span class="input-group-text" id="inputGroupPrepend">@</span>
+<input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+<div class="invalid-feedback"> *@
 
 <div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class=" m-0 font-weight-bold text-primary text-center"><i class="fa-solid fa-list"></i></h6>
+    <div class="card-header py-1">
+        <label class="mb-1 display">
+            <span class="form-label"><i class="fa-solid fa-magnifying-glass"></i> <b>
+                    Nombre:</b></span>
+            <input type="text" class="form-control" placeholder="Buscar Por Nombre" id="Buscarnombre"
+                onkeyup="this.value = this.value.toUpperCase();" onchange="ListadoCategorias()" />
+        </label>
+
+        <label class="mb-1 display">
+            <span class="form-label"><i class="fa-solid fa-magnifying-glass"></i> <b>
+                    Fecha:</b></span>
+            <input type="date" class="form-control" id="Buscarfecha" onchange="ListadoCategorias()">
+        </label>
+        <label class="form-label display">
+            <button type="button" class="form-control" onclick="Limpiar()">LIMPIAR</button>
+        </label>
     </div>
     <div class="card-body">
-        <div class="table-responsive" style="overflow-y: hidden">
-            <table class="table table-hover table-bordered border-primary" style="color: black;" id="Imprimir"
-                width="100%" cellspacing="0">
+        <div class="table-responsive" style="height: 370px;">
+            <table class="table table-bordered border-primary" style="color: black;" id="Imprimir" width="100%"
+                cellspacing="0">
                 <thead class="table-success">
                     <tr class="text-center">
-                        <th>Descripción</th>
-                        <th>Fecha de Registro</th>
-                        <th><b><u>Opciones:</u></b></th>
+                        <th><i class="fa-solid fa-list"></i> Nombre</th>
+                        <th><i class="fa-solid fa-calendar-days"></i> Fecha</th>
+                        <th><i class="fa-solid fa-gears"></i> <b><u>Opciones:</u></b></th>
                     </tr>
                 </thead>
                 <tbody id="tbody-categorias">
                 </tbody>
+                <thead class="table-success">
+                    <tr class="text-center">
+                        <th><i class="fa-solid fa-list"></i> Nombre</th>
+                        <th><i class="fa-solid fa-calendar-days"></i> Fecha</th>
+                        <th><i class="fa-solid fa-gears"></i> <b><u>Opciones:</u></b></th>
+                    </tr>
+                </thead>
             </table>
         </div>
     </div>
@@ -76,6 +102,16 @@
 
 @section Scripts
 {
+    @* <script>
+const ocultar = document.querySelector(".ocultar");
+ocultar.addEventListener("mouseenter", () => {
+ocultar.style.display = "none";
+});
+
+ocultar.addEventListener("mouseleave", () => {
+ocultar.style.display = "block";
+});
+</script> *@
     <script src="~/js/Categorias-1.0.0.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -84,15 +120,17 @@
         @* const expreciones = {descripcion: /^[a-zA-Z0-9\-\_]{4,16}$/} *@
             (function () {
                 'use strict'
-
                 // Fetch all the forms we want to apply custom Bootstrap validation styles to
                 var forms = document.querySelectorAll('.needs-validation')
 
                 // Loop over them and prevent submission
                 Array.prototype.slice.call(forms)
                     .forEach(function (form) {
+                        console.log("1?");
                         form.addEventListener('submit', function (event) {
-                            if (!form.checkValidity()) {
+                            console.log("2?");
+                            if (!form.checkValidity(console.log("3"))) {
+                                console.log("4?");
                                 event.preventDefault()
                                 event.stopPropagation()
                             }
@@ -100,6 +138,12 @@
                         }, false)
                     })
             })()
+    </script>
+    <script>
+        function Limpiar() {
+            document.getElementById("Buscarnombre").value = "";
+            document.getElementById("Buscarfecha").value = "";
+        }
     </script>
 
     @* <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>

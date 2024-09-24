@@ -40,7 +40,5 @@ public class VistaMostrarCategoria
     public DateTime FechaRegistro { get; set; }
     public string? FechaRegistroString { get; set; }
 
-    public bool Eliminado { get; set; }
-
     public bool Disponibilidad { set; get; }
 }

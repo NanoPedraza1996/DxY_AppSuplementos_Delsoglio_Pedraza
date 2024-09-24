@@ -22,7 +22,7 @@ function ListadoDetalleVentaTemporal() {
                     <td class="text-center">${venta.subTotal}</td>
                     <td class="text-center">
                     <button type="button" class="btn btn-danger" onclick="EliminarVentaDetalleTemporal(${venta.detalleVentaTemporalID})">
-                    Eliminar
+                    <i class="fa-solid fa-trash"></i>
                     </button>
                     </td>
                 </tr>
@@ -42,7 +42,15 @@ function EliminarVentaDetalleTemporal(detalleVentaTemporalID) {
         data: { detalleVentaTemporalID: detalleVentaTemporalID },
         type: 'POST',
         success: function (resultado) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "¡Removido!",
+                showConfirmButton: false,
+                timer: 1200
+            });
             ListadoDetalleVentaTemporal();
+
         },
         error: function (xhr, status) {
             alert("Disculpe, Existio Un Problema.");
@@ -134,6 +142,7 @@ function CancelarVenta() {
 }
 
 
+
 function GuardarVentas() {
     let ventaID = document.getElementById("VentaID").value;
     let totalAPagar = document.getElementById("TotalAPagar").value;
@@ -145,10 +154,16 @@ function GuardarVentas() {
         type: 'POST',
         dataType: 'json',
         success: function (resultado) {
-            if (resultado == "") {
-                $("#staticBackdrop").modal("hide");
-                // location.href = "../../Ventas/Index";
-            }
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "¡Guardado!",
+                showConfirmButton: false,
+                timer: 1200
+            });
+            $("#staticBackdrop").modal("hide");
+            // location.href = "../../Ventas/Index";
+
 
         }
     });

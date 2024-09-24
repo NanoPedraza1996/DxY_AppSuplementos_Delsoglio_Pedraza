@@ -24,7 +24,7 @@ public class VentasController : Controller
     //     return View(await ventas.ToListAsync());
     // }
 
-    public async Task<IActionResult> Crear()
+    public async Task<IActionResult> Index()
     {
         var ventas = _contexto.Ventas.Include(v => v.Cliente);
 
@@ -42,7 +42,7 @@ public class VentasController : Controller
         cliente.Add(new Cliente { ClienteID = 0, NombreCompleto = "[SELECCIONE...]" });
         ViewBag.ClienteID = new SelectList(cliente.OrderBy(p => p.ClienteID), "ClienteID", "NombreCompleto");
 
-        return View(ventas);
+        return View(await ventas.ToListAsync());
     }
 
 
@@ -290,6 +290,15 @@ public class VentasController : Controller
         {
             try
             {
+                if (clienteID == 0)
+                {
+                    resultado = "NO";
+                }
+                // var ventaConDetalle = _contexto.DetallePedidoTemporales.Where(d => d.DetallePedidoTemporalID > 1).Count();
+                // if (ventaConDetalle > 1)
+                // {
+                //     resultado = "no";
+                // }
                 var existeVenta = await _contexto.Ventas.Where(v => v.VentaID == ventaID).SingleOrDefaultAsync();
                 var venta = new Venta
                 {

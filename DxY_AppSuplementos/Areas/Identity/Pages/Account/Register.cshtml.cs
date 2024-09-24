@@ -97,6 +97,7 @@ namespace DxY_AppSuplementos.Areas.Identity.Pages.Account
             [Display(Name = "ConfirmPassword")]
             [Compare("Password", ErrorMessage = "La contraseña y la contraseña de confirmación no coinciden.")]
             public string ConfirmPassword { get; set; }
+
         }
 
 

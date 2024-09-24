@@ -3,18 +3,20 @@
 }
 
 @* <link href="~/lib/PlantillaStartBootstrap/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"> *@
+@*justify-content-between*@
+
 
 
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
         <!-- Button trigger modal -->
-        <button type="button" onclick="BuscarProducto(), hideInput()" class="btn btn-primary" data-bs-toggle="modal"
+        <button type="button" onclick="BuscarProducto()" class="btn btn-primary" data-bs-toggle="modal"
             data-bs-target="#staticBackdrop">
-            Nuevo Producto
+            <i title="Cargar Nuevo Producto" class="fa-solid fa-plus"></i> <i title="Cargar Nuevo Producto"
+                class="fa-solid fa-plus"></i>
         </button>
-        <p style="color: red;"><b><u>PRODUCTOS</u></b></p>
-        <button class="btn btn-warning" onclick="Imprimir()">
-            <i class="fa-solid fa-print"></i> IMPRIMIR
+        <button type="button" class="btn btn-warning" onclick="Imprimir()">
+            <i title="Imprimir Tabla Productos" class="fa-solid fa-download"></i>
         </button>
     </div>
 </div>
@@ -62,7 +64,7 @@
                             <input type="number" class="form-control" id="PrecioVenta" name="PrecioVenta" />
                             <p class="text-danger" id="Error"></p>
                         </div>
-                        <div class="col-6" id="ocultar">
+                        <div id="ocultarr" class="col-6">
                             <label for="Stock" class="control-label">Stock</label>
                             <input type="number" class="form-control" id="Stock" name="Stock" />
                             <p class="text-danger" id="Error"></p>
@@ -87,31 +89,54 @@
 
 <hr />
 
+
 <div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary text-center"><i class="fa-solid fa-list"></i></h6>
+    <div class="card-header py-1">
+        <label class="form-label display">
+            <span class="form-label"><b><i class="fa-solid fa-magnifying-glass"></i> Fecha:</b></span>
+            <input type="date" value="dd-MM-yyyy" class="form-control" id="buscarHasta" onchange="BuscarProducto()" />
+        </label>
+        <label class="form-label display">
+            <span class="form-label"><b><i class="fa-solid fa-magnifying-glass"></i> Nombre:</b></span>
+            <input type="text" class="form-control" id="nombre" placeholder="Buscar Por Nombre"
+                onkeyup="this.value = this.value.toUpperCase();" onchange="BuscarProducto()" />
+        </label>
+        <label class="form-label display">
+            <button type="button" class="form-control" onclick="Limpiar()">LIMPIAR</button>
+        </label>
     </div>
     <div class="card-body">
-        <div class="table-responsive" style="overflow-y: hidden">
+        <div class="table-responsive">
             <table class="table table-hover table-bordered border-primary" style="color: black;" id="Imprimir"
                 width="100%" cellspacing="0">
                 <thead class="table-success">
                     <tr class="text-center">
-                        <th>Nombre</th>
-                        <th>Descripcion</th>
-                        <th>Fecha Registro</th>
+                        <th><i class="fa-solid fa-tag"></i> Nombre</th>
+                        <th><i class="fa-solid fa-bars"></i> Descripcion</th>
+                        <th class="ocultar550">Fecha</th>
                         <th>$ Venta</th>
                         <th>$ Compra</th>
-                        <th>Stock</th>
-                        <th>Categoria</th>
-                        <th>Imagen</th>
-                        <th><b><u>Opciones:</u></b></th>
-                        @* <th class="table-primary" style="width: 70px"></th>
-                        <th class="table-primary" style="width: 70px"></th> *@
+                        <th><i class="fa-solid fa-money-bill-trend-up"></i> Stock</th>
+                        <th class="ocultar550">Categoria</th>
+                        <th class="ocultar550">Imagen</th>
+                        <th><b><u><i class="fa-solid fa-gears"></i> Opciones:</u></b></th>
                     </tr>
                 </thead>
                 <tbody class="text-center" id="TablaProducto">
                 </tbody>
+                <thead class="table-success">
+                    <tr class="text-center">
+                        <th><i class="fa-solid fa-tag"></i> Nombre</th>
+                        <th><i class="fa-solid fa-bars"></i> Descripcion</th>
+                        <th class="ocultar550">Fecha</th>
+                        <th>$ Venta</th>
+                        <th>$ Compra</th>
+                        <th><i class="fa-solid fa-money-bill-trend-up"></i> Stock</th>
+                        <th class="ocultar550">Categoria</th>
+                        <th class="ocultar550">Imagen</th>
+                        <th><b><u><i class="fa-solid fa-gears"></i> Opciones:</u></b></th>
+                    </tr>
+                </thead>
             </table>
         </div>
     </div>
@@ -123,6 +148,13 @@
     <script src="~/js/Productos-1.0.0.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function Limpiar() {
+            document.getElementById("nombre").value = "";
+            document.getElementById("buscarHasta").value = "";
+        }
+    </script>
 
     @* <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 

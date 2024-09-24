@@ -42,10 +42,12 @@
                     <!-- Sidebar - Brand -->
                     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
                         <div class="sidebar-brand-icon rotate-n-15">
-                            <i class="fa-solid fa-jar-wheat"></i>
-                            <i class="fa-solid fa-jar-wheat"></i>
+                            <img src="~/img/logo.png" class="logo">
                         </div>
-                        <div class="sidebar-brand-text mx-3">DxY Suplementos <sup>srl</sup></div>
+                        <div class="sidebar-brand-text mx-2">Suplementos <sup><i class="fa-solid fa-jar-wheat"
+                                    style="color: rgb(233, 233, 27);"></i> srl <i style="color: rgb(241, 241, 28);"
+                                    class="fa-solid fa-jar-wheat"></i></sup>
+                        </div>
                     </a>
 
 
@@ -76,19 +78,20 @@
                         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <h6 class="collapse-header">Detalles De Componentes:</h6>
-                                <a class="nav-link text-dark collapse-item" asp-area="" asp-controller="Home"
-                                    asp-action="Privacy">Privacidad</a>
+                                @* <a class="nav-link text-dark collapse-item" asp-area="" asp-controller="Home"
+                        asp-action="Privacy">Privacidad</a> *@
                                 <a class="nav-link text-dark collapse-item" asp-area="" asp-controller="Categorias"
                                     asp-action="Index">Categorias</a>
                                 <a class="nav-link text-dark collapse-item" asp-area="" asp-controller="Productos"
                                     asp-action="Index">Productos</a>
                                 <a class="nav-link text-dark collapse-item" asp-area="" asp-controller="Clientes"
                                     asp-action="Index">Clientes</a>
+                                <a class="nav-link text-dark collapse-item" asp-area="" asp-controller="Vistas"
+                                    asp-action="Index">Vistas</a>
                                 @* <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a> *@
                             </div>
                         </div>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                             aria-expanded="true" aria-controls="collapseUtilities">
@@ -104,11 +107,11 @@
                         <a class="nav-link text-dark collapse-item" asp-area="" asp-controller="Promociones"
                         asp-action="Crear">Crear
                         Promociones</a> *@
+                                @* <a class="nav-link text-dark collapse-item" asp-area="" asp-controller="Ventas"
+                        asp-action="Index">Listado De
+                        Ventas</a> *@
                                 <a class="nav-link text-dark collapse-item" asp-area="" asp-controller="Ventas"
-                                    asp-action="Index">Listado De
-                                    Ventas</a>
-                                <a class="nav-link text-dark collapse-item" asp-area="" asp-controller="Ventas"
-                                    asp-action="Crear">Crear
+                                    asp-action="Index">Crear
                                     Ventas</a>
                             </div>
                         </div>
@@ -204,7 +207,7 @@
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <footer class="sticky-footer bg-white">
+            <footer class="sticky-footer bg-white bg-light">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
                         <span>Derechos Reservados &copy; DxY Suplementos @DateTime.Now.Year</span>

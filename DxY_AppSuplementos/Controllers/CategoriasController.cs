@@ -22,14 +22,32 @@ public class CategoriasController : Controller
 
     public IActionResult Index()
     {
+
         return View();
     }
 
-    public JsonResult ListadoCategorias(int? id)
+    // public async Task<List<MyEntity>> GetEntitiesByDate(DateTime date)
+    // {
+    //     return await _context.MyEntities
+    //                          .Where(e => e.Date.Date == date.Date)
+    //                          .ToListAsync();
+    // }
+
+    // public async Task<List<Registro>> FiltrarPorFecha(DateTime fechaInicio, DateTime fechaFin)
+    // {
+    //     return await _context.Registros
+    //         .Where(r => r.Fecha >= fechaInicio && r.Fecha <= fechaFin)
+    //         .ToListAsync();
+
+    //         return View(await _context.Venta.Where(x => x.Fecha.Day == day && x.Fecha.Month == month && x.Fecha.Year == year ).ToListAsync());
+
+    // }
+
+
+    public JsonResult ListadoCategorias(int? id, DateTime? Buscarfecha, string? Buscarnombre)
     {
         //DEFINIMOS UNA VARIABLE EN DONDE GUARDAMOS EL LISTADO COMPLETO DE CATEGORIAS
         var categorias = _contexto.Categorias.ToList();
-
         //LUEGO PREGUNTAMOS SI EL USUARIO INGRESO UN ID
         //QUIERE DECIR QUE QUIERE UNA CATEGORIA EN PARTICULAR
         if (id != null)
@@ -38,14 +56,50 @@ public class CategoriasController : Controller
             categorias = categorias.Where(c => c.CategoriaID == id).ToList();
         }
 
+        if (Buscarfecha != null && !string.IsNullOrEmpty(Buscarnombre))
+        {
+            categorias = categorias.Where(c => c.FechaRegistro.Date == Buscarfecha && c.Descripcion.Contains(Buscarnombre)).ToList();
+        }
+        else if (Buscarfecha != null && Buscarnombre == null)
+        {
+            categorias = categorias.Where(c => c.FechaRegistro.Date == Buscarfecha).ToList();
+        }
+        else if (Buscarfecha == null && !string.IsNullOrEmpty(Buscarnombre))
+        {
+            categorias = categorias.Where(c => c.Descripcion.Contains(Buscarnombre)).ToList();
+        }
+        else
+        {
+            categorias = categorias.OrderBy(c => c.Descripcion).OrderBy(c => c.Disponibilidad).ToList();
+        }
+
+
+        // if (!string.IsNullOrEmpty(Buscarnombre))
+        // {
+        //     categorias = categorias.Where(c => c.Descripcion.Contains(Buscarnombre)).ToList();
+        // }
+        // else
+        // {
+        //     categorias = categorias.OrderBy(c => c.Descripcion).ToList();
+        // }
+
+        // if (!string.IsNullOrEmpty(Buscarnombre))
+        // {
+        //     categorias = categorias.Where(c => c.Descripcion.Contains(Buscarnombre)).ToList();
+        // }
+
+        // if (Buscarfecha != null)
+        // {
+        //     categorias = categorias.Where(c => c.FechaRegistro == Buscarfecha).ToList();
+        // }
+
         var categoria = categorias.Select(c => new VistaMostrarCategoria
         {
             CategoriaID = c.CategoriaID,
             Descripcion = c.Descripcion,
             FechaRegistro = c.FechaRegistro,
-            FechaRegistroString = c.FechaRegistro.ToString("dd/MM/yyyy"),
-            Eliminado = c.Eliminado,
-            Disponibilidad = c.Disponibilidad
+            FechaRegistroString = c.FechaRegistro.ToString("dd/MM/yyyy hh:MM"),
+            Disponibilidad = c.Disponibilidad,
         }).ToList();
 
         return Json(categoria);
@@ -74,10 +128,6 @@ public class CategoriasController : Controller
                     _contexto.Add(categoria);
                     _contexto.SaveChanges();
                 }
-                else
-                {
-                    resultado = "NO";
-                }
 
             }
             else
@@ -90,10 +140,6 @@ public class CategoriasController : Controller
                     categoriaEditar.Descripcion = descripcion;
                     categoriaEditar.FechaRegistro = DateTime.Now;
                     _contexto.SaveChanges();
-                }
-                else
-                {
-                    resultado = "No";
                 }
             }
         }
@@ -133,7 +179,7 @@ public class CategoriasController : Controller
     }
 
 
-    public JsonResult EliminarCategoria(int categoriaID, int eliminado)
+    public JsonResult EliminarCategoria(int categoriaID)
     {
         string resultado = "";
         var eliminarCategoria = _contexto.Categorias.Find(categoriaID);
@@ -142,17 +188,14 @@ public class CategoriasController : Controller
             var cateEnProduc = _contexto.Productos.Where(p => p.CategoriaID == categoriaID).Count();
             if (cateEnProduc == 0)
             {
-                eliminado = 0;
                 _contexto.Remove(eliminarCategoria);
                 _contexto.SaveChanges();
+                resultado = "";
             }
             else
             {
-                eliminado = 1;
-                _contexto.SaveChanges();
-                resultado = "NO SE PUDO";
+                resultado = "No Se Pudo";
             }
-
         }
 
         return Json(resultado);

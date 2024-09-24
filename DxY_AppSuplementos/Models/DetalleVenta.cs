@@ -24,6 +24,9 @@ public class MostrarVistaDetalleVenta
     public decimal PrecioVenta { get; set; }
     public int Cantidad { get; set; }
     public decimal SubTotal { get; set; }
+
     public int VentaID { get; set; }
+
     public int ProductoID { get; set; }
+    public string? ProductoIDNombre { get; set; }
 }

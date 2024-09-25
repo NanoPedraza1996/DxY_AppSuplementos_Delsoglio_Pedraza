@@ -62,14 +62,55 @@ public class ProductosController : Controller
 
         productos = productos.ToList();
 
+        // List<VistaProductosMostrar> vistaProductosMostrars = new List<VistaProductosMostrar>();
 
         foreach (var productoo in productos)
         {
+            // string base64 = "";
+            // if (productoo.Imagen != null)
+            // {
+            //     base64 = Convert.ToBase64String(productoo.Imagen);
+            // }
             if (productoo.Imagen != null)
             {
                 productoo.ImagenBase64 = Convert.ToBase64String(productoo.Imagen);
             }
+
+            // var productoMostar = new VistaProductosMostrar
+            // {
+            //     ProductoID = productoo.ProductoID,
+            //     Nombre = productoo.Nombre,
+            //     Descripcion = productoo.Descripcion,
+            //     FechaRegistro = productoo.FechaRegistro,
+            //     FechaRegistroString = productoo.FechaRegistro.ToString("dd/MM/yyyy"),
+            //     PrecioCompra = productoo.PrecioCompra,
+            //     PrecioVenta = productoo.PrecioVenta,
+            //     Stock = productoo.Stock,
+            //     CategoriaID = productoo.CategoriaID,
+            //     CategoriaIDNombre = productoo.Categoria.Descripcion,
+            //     Disponibilidad = productoo.Disponibilidad,
+            //     ImagenBase64 = productoo.ImagenBase64,
+            //     TipoImagen = productoo.TipoImagen
+            // };
+            // vistaProductosMostrars.Add(productoMostar);
         }
+
+        // var productoss = productos.Select(p => new VistaProductosMostrar
+        // {
+        //     ProductoID = p.ProductoID,
+        //     Nombre = p.Nombre,
+        //     Descripcion = p.Descripcion,
+        //     FechaRegistro = p.FechaRegistro,
+        //     FechaRegistroString = p.FechaRegistro.ToString("dd/MM/yyyy"),
+        //     PrecioCompra = p.PrecioCompra,
+        //     PrecioVenta = p.PrecioVenta,
+        //     Stock = p.Stock,
+        //     CategoriaID = p.CategoriaID,
+        //     CategoriaIDNombre = p.Categoria.Descripcion,
+        //     Disponibilidad = p.Disponibilidad,
+        //     ImagenBase64 = p.ImagenBase64,
+        //     TipoImagen = p.TipoImagen
+        // }).ToList();
 
         return Json(productos);
     }
@@ -78,6 +119,11 @@ public class ProductosController : Controller
     {
 
         string resultado = "";
+        // if (categoriaID == 0)
+        // {
+        //     resultado = "Por favor, Seleccione Una Categoria";
+        //     return Json(resultado);
+        // }
 
         // if (categoriaID == 0)
         // {

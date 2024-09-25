@@ -4,14 +4,13 @@ window.onload = BuscarProducto();
 // }
 
 function BuscarProducto() {
-    // $("#TablaProducto").empty();
     let buscarHasta = $("#buscarHasta").val();
     let nombre = $("#nombre").val();
     $.ajax({
         url: '../../Productos/BuscarProducto',
         data: { BuscarHasta: buscarHasta, Nombre: nombre },
         type: 'POST',
-        dataType: 'json',
+        // dataType: 'json',
         success: function (productos) {
             $("#staticBackdrop").modal("hide");
             LimpiarModal();
@@ -73,6 +72,7 @@ function AbrirModalProducto(productoID) {
             document.getElementById("Nombre").value = producto.nombre;
             document.getElementById("Descripcion").value = producto.descripcion;
             document.getElementById("PrecioCompra").value = producto.precioCompra;
+            // document.getElementById("Ganancias").value = producto.ganancias;
             document.getElementById("PrecioVenta").value = producto.precioVenta;
             document.getElementById("CategoriaID").value = producto.categoriaID;
             document.getElementById('ocultarr').style.display = 'none';
@@ -97,6 +97,7 @@ function GuardarProductos() {
         let stock = document.getElementById("Stock").value;
         let categoriaID = document.getElementById("CategoriaID").value;
         let formData = new FormData($(this)[0]);
+
 
         var guardar = true;
         if (!nombre) {
@@ -137,8 +138,13 @@ function GuardarProductos() {
                 dataType: 'json',
                 async: false,
                 success: function (resultado) {
+                    // if (resultado != "") {
+                    //     alert(resultado);
+                    // }
+                    // else {
                     BuscarProducto();
                     $("#staticBackdrop").modal("hide");
+                    // }
                 },
                 cache: false,
                 contentType: false,
@@ -207,6 +213,7 @@ function LimpiarModal() {
     document.getElementById("PrecioVenta").value = "";
     document.getElementById("Stock").value = "";
     document.getElementById("CategoriaID").value = 0;
+    $("#staticBackdropLabel").text("Ingresar Nueva Producto");
 }
 
 
@@ -283,6 +290,35 @@ function DesahabilitarProductos(productoID, disponibilidad) {
             alert("Disculpe, Existio Un Problema.");
         },
     });
+}
+
+
+function CalcularImportes(origen) {
+    console.log(origen);
+    let compra = $("#PrecioCompra").val();
+    compra = compra.replace(/\,/g, "");
+    compra = parseFloat(compra);
+
+
+    let ganancia = $("#Ganancias").val();
+    ganancia = ganancia.replace(/\,/g, "");
+    ganancia = parseFloat(ganancia);
+
+
+    let venta = $("#PrecioVenta").val();
+    venta = venta.replace(/\,/g, "");
+    venta = parseFloat(venta);
+
+
+    if (origen == 1 || origen == 2) {
+        venta = compra + (compra * (ganancia / 100));
+        $("#PrecioVenta").val(venta.toFixed(2));
+    }
+
+    if (origen == 3) {
+        ganancia = venta * 100 / compra - 100;
+        $("#Ganancias").val(ganancia.toFixed(2));
+    }
 }
 
 

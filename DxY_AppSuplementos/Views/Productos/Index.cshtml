@@ -30,13 +30,13 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Agregar Productos</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id='files' method="post" enctype="multipart/form-data">
+            <form id='files' class="formulario needs-validation" novalidate method="post" enctype="multipart/form-data">
                 <div class="modal-body">
                     <input type="hidden" id="ProductoID" name="ProductoID" value="0" />
                     <div class="row">
                         <div class="col-6">
                             <label for="Nombre" class="control-label">Nombre</label>
-                            <input type="text" class="form-control" id="Nombre" name="Nombre" />
+                            <input type="text" required class="form-control" id="Nombre" name="Nombre" />
                             <p class="text-danger" id="Error"></p>
                         </div>
                         <div class="col-6">
@@ -44,29 +44,40 @@
                             @Html.DropDownList("CategoriaID", null, htmlAttributes: new
                                 {
                                     @class = "form-control",
-                                    name = "CategoriaID"
+                                    name = "CategoriaID",
                                 })
                             <p class="text-danger" id="Error"></p>
                         </div>
                         <div class="col-12">
                             <label for="Descripcion" class="control-label">Descripcion</label>
-                            <textarea type="text" class="form-control" id="Descripcion" name="Descripcion"></textarea>
-                            @* <input /> *@
+                            <textarea type="text" required class="form-control" id="Descripcion"
+                                name="Descripcion"></textarea>
                             <p class="text-danger" id="Error"></p>
                         </div>
-                        <div class="col-6">
+                        <div class="col-4">
                             <label for="PrecioCompra" class="control-label">Precio De Compra:</label>
-                            <input type="number" class="form-control" id="PrecioCompra" name="PrecioCompra" />
+                            <input type="tel" class="form-control" value="0" autocomplete="off" onclick="this.select()"
+                                oninput="CalcularImportes(1)" required id="PrecioCompra" name="PrecioCompra"
+                                aria-describedby="PrecioCompra" />
                             <p class="text-danger" id="Error"></p>
                         </div>
-                        <div class="col-6">
+                        <div class="col-4">
+                            <label for="Ganancias" class="control-label">%Ganancias:</label>
+                            <input type="tel" class="form-control" value="0" autocomplete="off" onclick="this.select()"
+                                oninput="CalcularImportes(2)" required id="Ganancias" name="Ganancias"
+                                aria-describedby="Ganancias" />
+                            <p class="text-danger" id="Error"></p>
+                        </div>
+                        <div class="col-4">
                             <label for="PrecioVenta" class="control-label">Precio De Venta</label>
-                            <input type="number" class="form-control" id="PrecioVenta" name="PrecioVenta" />
+                            <input type="tel" class="form-control" value="0" autocomplete="off" onclick="this.select()"
+                                oninput="CalcularImportes(3)" required id="PrecioVenta" name="PrecioVenta"
+                                aria-describedby="PrecioVenta" />
                             <p class="text-danger" id="Error"></p>
                         </div>
                         <div id="ocultarr" class="col-6">
                             <label for="Stock" class="control-label">Stock</label>
-                            <input type="number" class="form-control" id="Stock" name="Stock" />
+                            <input type="number" required class="form-control" id="Stock" name="Stock" />
                             <p class="text-danger" id="Error"></p>
                         </div>
                         <div class="col-6">
@@ -114,8 +125,8 @@
                         <th><i class="fa-solid fa-tag"></i> Nombre</th>
                         <th><i class="fa-solid fa-bars"></i> Descripcion</th>
                         <th class="ocultar550">Fecha</th>
-                        <th>$ Venta</th>
                         <th>$ Compra</th>
+                        <th>$ Venta</th>
                         <th><i class="fa-solid fa-money-bill-trend-up"></i> Stock</th>
                         <th class="ocultar550">Categoria</th>
                         <th class="ocultar550">Imagen</th>
@@ -129,8 +140,8 @@
                         <th><i class="fa-solid fa-tag"></i> Nombre</th>
                         <th><i class="fa-solid fa-bars"></i> Descripcion</th>
                         <th class="ocultar550">Fecha</th>
-                        <th>$ Venta</th>
                         <th>$ Compra</th>
+                        <th>$ Venta</th>
                         <th><i class="fa-solid fa-money-bill-trend-up"></i> Stock</th>
                         <th class="ocultar550">Categoria</th>
                         <th class="ocultar550">Imagen</th>

@@ -48,6 +48,7 @@ public class Producto
 
 
     [Display(Name = "Categoria.")]
+    [Required(ErrorMessage = "La Categoria Es Obligatoria.")]
     public int CategoriaID { get; set; }
     public virtual Categoria? Categoria { get; set; }
 
@@ -80,33 +81,23 @@ public class Producto
 public class VistaProductosMostrar
 {
     public int ProductoID { get; set; }
-
-
     public string? Nombre { get; set; }
-
-
     public string? Descripcion { get; set; }
-
 
     public DateTime FechaRegistro { get; set; }
     public string? FechaRegistroString { get; set; }
 
-
     public decimal PrecioCompra { get; set; }
-
-
     public decimal PrecioVenta { get; set; }
-
-
     public int Stock { get; set; }
-
 
     public int CategoriaID { get; set; }
     public string? CategoriaIDNombre { get; set; }
 
+    public bool Disponibilidad { get; set; }
 
-    public byte[]? Imagen { get; set; }
+    public string? ImagenBase64 { get; set; }
     public string? TipoImagen { get; set; }
-    public string? NombreImagen { get; set; }
+
 
 }

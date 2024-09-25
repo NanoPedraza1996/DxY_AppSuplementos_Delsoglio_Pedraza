@@ -299,6 +299,7 @@ public class VentasController : Controller
                 // {
                 //     resultado = "no";
                 // }
+
                 var existeVenta = await _contexto.Ventas.Where(v => v.VentaID == ventaID).SingleOrDefaultAsync();
                 var venta = new Venta
                 {
@@ -309,6 +310,7 @@ public class VentasController : Controller
                 };
                 await _contexto.AddAsync(venta);
                 await _contexto.SaveChangesAsync();
+
 
                 var detalleVenta = await _contexto.DetalleVentaTemporales.ToListAsync();
                 foreach (var detalles in detalleVenta)

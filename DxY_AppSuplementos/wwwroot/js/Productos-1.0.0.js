@@ -39,11 +39,11 @@ function BuscarProducto() {
                     '<tr class=' + botonHabilitar + '>'
                     + '<td title="Nombre">' + producto.nombre + '</td>'
                     + '<td title="Descripcion">' + producto.descripcion + '</td>'
-                    + '<td title="Fecha De Registro" class="ocultar550">' + producto.fechaRegistro + '</td>'
+                    + '<td title="Fecha De Registro" class="ocultar550">' + producto.fechaRegistroString + '</td>'
                     + '<td title="Precio De Compra">' + producto.precioCompra + '</td>'
                     + '<td title="Precio De Venta">' + producto.precioVenta + '</td>'
                     + '<td title="Stock">' + producto.stock + '</td>'
-                    + '<td title="Categoria" class="ocultar550">' + producto.categoriaID + '</td>'
+                    + '<td title="Categoria" class="ocultar550">' + producto.categoriaNombre + '</td>'
                     + imagen
                     + '<td title="">' + contenidoTabla + '</td>'
                     + '</tr>'

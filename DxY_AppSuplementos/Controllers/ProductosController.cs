@@ -42,7 +42,7 @@ public class ProductosController : Controller
 
     public JsonResult BuscarProducto(int? id, DateTime? BuscarHasta, string? Nombre)
     {
-        var productos = _contexto.Productos.ToList();
+        var productos = _contexto.Productos.Include(p => p.Categoria).ToList();
         if (id != null)
         {
             productos = productos.Where(p => p.ProductoID == id).ToList();
@@ -60,59 +60,36 @@ public class ProductosController : Controller
             productos = productos.Where(p => p.Nombre.Contains(Nombre)).ToList();
         }
 
-        productos = productos.ToList();
+        List<VistaProductosMostrar> vistaProductosMostrar = new List<VistaProductosMostrar>();
 
-        // List<VistaProductosMostrar> vistaProductosMostrars = new List<VistaProductosMostrar>();
-
-        foreach (var productoo in productos)
+        foreach (var producto in productos)
         {
-            // string base64 = "";
-            // if (productoo.Imagen != null)
-            // {
-            //     base64 = Convert.ToBase64String(productoo.Imagen);
-            // }
-            if (productoo.Imagen != null)
+            string base64 = "";
+            if (producto.Imagen != null)
             {
-                productoo.ImagenBase64 = Convert.ToBase64String(productoo.Imagen);
+                 base64 = Convert.ToBase64String(producto.Imagen);
             }
-
-            // var productoMostar = new VistaProductosMostrar
-            // {
-            //     ProductoID = productoo.ProductoID,
-            //     Nombre = productoo.Nombre,
-            //     Descripcion = productoo.Descripcion,
-            //     FechaRegistro = productoo.FechaRegistro,
-            //     FechaRegistroString = productoo.FechaRegistro.ToString("dd/MM/yyyy"),
-            //     PrecioCompra = productoo.PrecioCompra,
-            //     PrecioVenta = productoo.PrecioVenta,
-            //     Stock = productoo.Stock,
-            //     CategoriaID = productoo.CategoriaID,
-            //     CategoriaIDNombre = productoo.Categoria.Descripcion,
-            //     Disponibilidad = productoo.Disponibilidad,
-            //     ImagenBase64 = productoo.ImagenBase64,
-            //     TipoImagen = productoo.TipoImagen
-            // };
-            // vistaProductosMostrars.Add(productoMostar);
+         
+            var productoMostrar = new VistaProductosMostrar
+            {
+                ProductoID = producto.ProductoID,
+                Nombre = producto.Nombre,
+                Descripcion = producto.Descripcion,
+                FechaRegistro = producto.FechaRegistro,
+                FechaRegistroString = producto.FechaRegistro.ToString("dd/MM/yyyy"),
+                PrecioCompra = producto.PrecioCompra,
+                PrecioVenta = producto.PrecioVenta,
+                Stock = producto.Stock,
+                CategoriaID = producto.CategoriaID,
+                CategoriaNombre = producto.Categoria.Descripcion,
+                Disponibilidad = producto.Disponibilidad,
+                ImagenBase64 = base64,
+                TipoImagen = producto.TipoImagen
+            };
+            vistaProductosMostrar.Add(productoMostrar);
         }
 
-        // var productoss = productos.Select(p => new VistaProductosMostrar
-        // {
-        //     ProductoID = p.ProductoID,
-        //     Nombre = p.Nombre,
-        //     Descripcion = p.Descripcion,
-        //     FechaRegistro = p.FechaRegistro,
-        //     FechaRegistroString = p.FechaRegistro.ToString("dd/MM/yyyy"),
-        //     PrecioCompra = p.PrecioCompra,
-        //     PrecioVenta = p.PrecioVenta,
-        //     Stock = p.Stock,
-        //     CategoriaID = p.CategoriaID,
-        //     CategoriaIDNombre = p.Categoria.Descripcion,
-        //     Disponibilidad = p.Disponibilidad,
-        //     ImagenBase64 = p.ImagenBase64,
-        //     TipoImagen = p.TipoImagen
-        // }).ToList();
-
-        return Json(productos);
+        return Json(vistaProductosMostrar);
     }
 
     public JsonResult GuardarProductos(int productoID, string nombre, string descripcion, DateTime fechaRegistro, int precioCompra, int precioVenta, int stock, int categoriaID, IFormFile imagen)

@@ -92,7 +92,7 @@ public class VistaProductosMostrar
     public int Stock { get; set; }
 
     public int CategoriaID { get; set; }
-    public string? CategoriaIDNombre { get; set; }
+    public string? CategoriaNombre { get; set; }
 
     public bool Disponibilidad { get; set; }
 
